@@ -7,7 +7,7 @@ public interface InterpreterInterface<T> {
 	
 	/**
 	 * Retrieve the value of an identifier from the memory
-	 * @param var 		value of an Identifier
+	 * @param var value of an Identifier
 	 * @return 
 	 * 	the set corresponding to var or null
 	 */
@@ -15,7 +15,7 @@ public interface InterpreterInterface<T> {
 	
 	/**
 	 * Evaluate a line of input
-	 * @param s 		an expression
+	 * @param s an expression
 	 * @return
 	 * 	if the statement is a print return the corresponding set
 	 * 	otherwise return null. also return null when an exception occurs (after printing it out!)

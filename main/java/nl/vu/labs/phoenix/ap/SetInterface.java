@@ -22,7 +22,7 @@ public interface SetInterface<T extends Comparable<T>> {
 	/*
 	PRE  -
 	POST - True; The element has been inserted
-		    False; The element has was already present
+		    False; The element has is already present
 	 */
 
 	T get();
@@ -30,8 +30,9 @@ public interface SetInterface<T extends Comparable<T>> {
 	PRE  - The Set may not be empty \\TODO verbeteren
 	POST - An element of the Set has been returned
 	 */
-	
+
 	boolean remove(T t);
+
 	/*
 	PRE  -
 	POST - True; The element t has been removed from the Set
@@ -51,20 +52,6 @@ public interface SetInterface<T extends Comparable<T>> {
 		False; the Identifier object given in the parameter is not equal to any Identifier object in the set
 	 */
 
-	Identifier getElement();
-	/*
-	@precondition
-		The set contains at least one element
-	@postcondition
-		?
-	*/
-	void removeElement(Identifier id);
-	/*
-	@precondition
-	@postcondition
-		The parameter Identifier object has been removed from the set
-
-	 */
 
 	int size();
 
@@ -74,7 +61,7 @@ public interface SetInterface<T extends Comparable<T>> {
 	POST - A copy of the Set object has been returned
 	 */
 
-	SetInterface<T>	union(SetInterface<T> s);
+	SetInterface<T> union(SetInterface<T> s);
 	/*
 	PRE -
 	POST-   Sucess;A new set has been returned containing all elements of both sets
@@ -104,12 +91,6 @@ public interface SetInterface<T extends Comparable<T>> {
 	/*
 		PRE  -
 		POST - The set is empty
-	 */
-
-	boolean ElementExists(T t);
-	/*
-	PRE -
-	POST -
 	 */
 
 }

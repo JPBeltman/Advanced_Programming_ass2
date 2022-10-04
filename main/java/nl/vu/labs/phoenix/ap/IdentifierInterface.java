@@ -29,6 +29,15 @@ public interface IdentifierInterface {
 	 */
 
     // your code here
+
+    Identifier init(char c);
+    /*
+    @precondition
+        the value of character c is a letter
+    @postcondition
+        The Identifier object contains only the character c
+
+     */
     int getSize();
 
     /*
@@ -36,12 +45,12 @@ public interface IdentifierInterface {
     @postcondition
         The current length of the identifier has been returned
      */
-    char addChar(char c);
+    Identifier addChar(char c);
 	/*
 	@precondition
-		the provided character is an alphanumeric character
+		the character c is an alphanumeric character
 	@postcondition
-		The identifier contains the char c at the last position
+		The identifier contains the character c at the last position
 	*/
 
     char getChar(int index);
@@ -51,7 +60,7 @@ public interface IdentifierInterface {
 		The character at the 'index' position within the Identifier object has been returned
 	*/
 
-    boolean isEqual();
+    boolean isEqual(Identifier id);
 	/*
 	@precondition
 	@postcondition

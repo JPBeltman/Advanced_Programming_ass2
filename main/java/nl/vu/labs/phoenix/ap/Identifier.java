@@ -1,31 +1,54 @@
 package nl.vu.labs.phoenix.ap;
 
 public class Identifier implements IdentifierInterface {
-	
+	StringBuffer id;
+
+	Identifier(){
+		id = new StringBuffer();
+		id.append('c');
+	}
+
+	Identifier(Identifier src){
+		this.id = new StringBuffer();
+		id.append('c');
+		init(src.getChar(0));
+		for(int i =1;i<src.getSize();i++){
+			addChar(src.getChar(i));
+		}
+	}
 	@Override
 	public String value() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.id.toString();
+	}
+
+	@Override
+	public Identifier init(char c) {
+		while(getSize() >0 ) {
+			this.id.deleteCharAt(getSize()-1);
+		}
+		addChar(c);
+		return this;
 	}
 
 	@Override
 	public int getSize() {
-		return 0;
+		return this.id.length();
 	}
 
 	@Override
-	public char addChar(char c) {
-		return 0;
+	public Identifier addChar(char c) {
+		this.id.append(c);
+		return this;
 	}
 
 	@Override
 	public char getChar(int index) {
-		return 0;
+		return this.id.charAt(index);
 	}
 
 	@Override
-	public boolean isEqual() {
-		return false;
+	public boolean isEqual(Identifier sb) {
+		return this.id.toString().equals(sb.id.toString());
 	}
 
 }

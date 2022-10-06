@@ -2,18 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="46da1e3f-2994-486a-9f64-9b10d66a224c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/java/nl/vu/labs/phoenix/ap/Identifier.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/java/nl/vu/labs/phoenix/ap/Identifier.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/java/nl/vu/labs/phoenix/ap/IdentifierInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/java/nl/vu/labs/phoenix/ap/IdentifierInterface.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/java/nl/vu/labs/phoenix/ap/Interpreter.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/java/nl/vu/labs/phoenix/ap/Interpreter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/java/nl/vu/labs/phoenix/ap/InterpreterInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/java/nl/vu/labs/phoenix/ap/InterpreterInterface.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/java/nl/vu/labs/phoenix/ap/LinkedList.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/java/nl/vu/labs/phoenix/ap/LinkedList.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/java/nl/vu/labs/phoenix/ap/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/java/nl/vu/labs/phoenix/ap/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/java/nl/vu/labs/phoenix/ap/Set.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/java/nl/vu/labs/phoenix/ap/Set.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/java/nl/vu/labs/phoenix/ap/SetInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/java/nl/vu/labs/phoenix/ap/SetInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/test/test.iml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +40,23 @@
     "last_opened_file_path": "/Users/JP/Documents/Business analytics/Course/2 Advanced Programming/2022/ass2"
   }
 }]]></component>
-  <component name="RunManager" selected="JUnit.ListTest.testRemove">
+  <component name="RunManager" selected="Application.Main">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="nl.vu.labs.phoenix.ap.Main" />
+      <module name="main" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ListTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="test" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="ListTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ListTest.testInsert" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="test" />
       <option name="PACKAGE_NAME" value="" />
@@ -66,31 +77,11 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ListTest.testRetrieve" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ListTest.testgoToPrevious" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="test" />
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="ListTest" />
-      <option name="METHOD_NAME" value="testRetrieve" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ListTest.testgoToLast" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="test" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="ListTest" />
-      <option name="METHOD_NAME" value="testgoToLast" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ListTest.testgoToNext" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="test" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="ListTest" />
-      <option name="METHOD_NAME" value="testgoToNext" />
+      <option name="METHOD_NAME" value="testgoToPrevious" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -98,13 +89,17 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Main" />
+        <item itemvalue="JUnit.ListTest" />
         <item itemvalue="JUnit.ListTest.testRemove" />
-        <item itemvalue="JUnit.ListTest.testgoToLast" />
-        <item itemvalue="JUnit.ListTest.testgoToNext" />
+        <item itemvalue="JUnit.ListTest.testgoToPrevious" />
         <item itemvalue="JUnit.ListTest.testInsert" />
-        <item itemvalue="JUnit.ListTest.testRetrieve" />
       </list>
     </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="init" />
+    <option name="LAST_COMMIT_MESSAGE" value="init" />
+  </component>
 </project>

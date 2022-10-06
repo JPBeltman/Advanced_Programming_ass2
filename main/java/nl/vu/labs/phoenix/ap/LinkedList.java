@@ -53,23 +53,25 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
             currentItem = firstItem = lastItem = new Node(d);
             numElements +=1;
         // 1. 'f', 2. 'c'
-        } else if(d.compareTo(firstItem.data) <=0){// c < f: current = c; c.next = f, first = c,
+        } else if(d.compareTo(firstItem.data) <=0){// c < f: current = c; c.next = f; first = c;
             currentItem = new Node(d,null,firstItem);
             firstItem = currentItem;
-            currentItem.next.prior = currentItem;// items' prior after current item = current
+            // items' prior after current item = current item
+            currentItem.next.prior = currentItem;
             numElements +=1;
         // 1. 'c', 2. 'f'
         } else if(d.compareTo(lastItem.data) >=0){ // f > c: current = f; f.prior = c,
             currentItem = new Node(d,lastItem,null);
             lastItem=currentItem;
-            currentItem.prior.next = currentItem; // items' next be4 current item = current
+            // items' next be4 current item = current
+            currentItem.prior.next = currentItem;
             numElements +=1;
         }else{ // item somewhere within bounds of list
             //start at first item and find spot;
             // iterate while d is larger than the next of current item
             // if not: insert d there
             goToFirst();
-            while(d.compareTo(currentItem.next.data)>0){
+            while(d.compareTo(currentItem.next.data)>=0){
                 goToNext();
             }
             //inserting d:
@@ -80,7 +82,6 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
             currentItem.next.prior = currentItem;
             currentItem.prior.next = currentItem;
             numElements +=1;
-
         }
         return this;
     }
@@ -94,17 +95,46 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
     public ListInterface<E> remove() {
         if(size() <= 1){
             this.init();
-        } else{
-            currentItem.prior.next = null;
-            currentItem = currentItem.prior;
-            numElements -=1;
+        } else {
+            // curr = first -> next has no prior, curr = next, first = curr
+            if(currentItem == firstItem){
+                currentItem.next.prior = null;
+                currentItem=currentItem.next;
+                firstItem=currentItem;
+                numElements -=1;
+            }// curr = first -> next has no prior, curr = next, first = curr
+            else if(currentItem == lastItem){
+                currentItem=currentItem.prior;
+                lastItem = currentItem;
+                numElements -=1;
+            }else{
+                // the next item prior to the current item is the next of current
+                currentItem.prior.next = currentItem.next;
+                // prior item to next of current item is prior of current
+                currentItem.next.prior = currentItem.prior;
+                // make the new current item the item next to the current current item
+                goToNext();
+                numElements -=1;}
         }
         return this;
     }
 
     @Override
     public boolean find(E d) {
-        return false;
+        // if d.comparetocurr ==0; found
+        goToFirst();
+        while(currentItem != lastItem){
+            if(d.compareTo(currentItem.data) == 0){
+                return true;
+            } else{
+                if(d.compareTo(currentItem.data)>0) {
+                    goToNext();
+                }else{
+                    return false;
+                }
+            }
+        }
+        return d.compareTo(currentItem.data) == 0;
     }
 
     @Override
@@ -135,7 +165,7 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
 
     @Override
     public boolean goToNext() {
-        if(numElements == 0){
+        if(numElements <= 1){
             return false;
         }
         if(currentItem != lastItem){
@@ -148,7 +178,15 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
 
     @Override
     public boolean goToPrevious() {
-        return false;
+        if(numElements <=1){
+            return false;
+        }
+        if(currentItem != firstItem){
+            currentItem = currentItem.prior;
+            return true;
+        }else{
+            return false;
+        }
     }
 
     @Override

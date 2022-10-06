@@ -69,6 +69,7 @@ public interface IdentifierInterface {
 		False; The Identifier object given in the parameter does not contain the same sequence as the current Identifier object
 	 */
 
-    // add Hashcode
+    //TODO add Hashcode
+
 
 }

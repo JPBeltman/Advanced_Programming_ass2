@@ -1,10 +1,14 @@
 package nl.vu.labs.phoenix.ap;
 public class Set<T extends Comparable<T>> implements SetInterface<T> {
-	LinkedList<T> list = new LinkedList<>();
+	ListInterface<T> list ;
+
+	Set(){
+		list= new LinkedList<>();
+	}
 	@Override
 	public boolean add(T t) {
-		// TODO Auto-generated method stub
-		//list.insert(t);
+
+		list.insert(t);
 
 		return false;
 	}
@@ -22,20 +26,13 @@ public class Set<T extends Comparable<T>> implements SetInterface<T> {
 	}
 
 	@Override
-	public int getSize() {
+	public int size() {
 		return 0;
 	}
 
 	@Override
 	public boolean elementExists(Identifier id) {
 		return false;
-	}
-
-
-	@Override
-	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@Override

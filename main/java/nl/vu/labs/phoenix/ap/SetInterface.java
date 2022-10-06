@@ -38,7 +38,7 @@ public interface SetInterface<T extends Comparable<T>> {
 	POST - True; The element t has been removed from the Set
 		   False; The element t does not exist in the Set
 	 */
-	int getSize();
+	int size();
 	/*
 	PRE  -
 	POST - The number of elements in the Set has been returned
@@ -51,9 +51,6 @@ public interface SetInterface<T extends Comparable<T>> {
 		True; The identifier object given in the parameter is equal to an Identifier object in the set
 		False; the Identifier object given in the parameter is not equal to any Identifier object in the set
 	 */
-
-
-	int size();
 
 	SetInterface<T> copy();
 	/*

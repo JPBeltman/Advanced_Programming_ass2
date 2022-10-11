@@ -27,6 +27,7 @@ public class Identifier implements IdentifierInterface {
 			this.id.deleteCharAt(getSize()-1);
 		}
 		addChar(c);
+		//comment
 		return this;
 	}
 

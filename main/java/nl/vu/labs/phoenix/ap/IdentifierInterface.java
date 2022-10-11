@@ -25,7 +25,7 @@ public interface IdentifierInterface {
 	 @precondition
 	    The identifier is not empty
 	 @postcondition
-	    The value of the Identifier has been returned m
+	    The value of the Identifier has been returned md
 	 */
 
     // your code here

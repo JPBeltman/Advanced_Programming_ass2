@@ -48,6 +48,7 @@ public class Identifier implements IdentifierInterface {
 
 	@Override
 	public boolean isEqual(Identifier sb) {
+		// hashcode kunnen gebruiken
 		return this.id.toString().equals(sb.id.toString());
 	}
 

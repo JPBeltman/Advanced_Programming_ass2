@@ -5,39 +5,44 @@ public class Set<T extends Comparable<T>> implements SetInterface<T> {
 	Set(){
 		list= new LinkedList<>();
 	}
+
+	@Override
+	public void init() {
+
+	}
 	@Override
 	public boolean add(T t) {
-
+	// als niet bestaand (elementExists); true
 		list.insert(t);
-
+	// anders false
 		return false;
 	}
 
 	@Override
 	public T get() {
-		// TODO Auto-generated method stub
 		return list.retrieve();
 	}
 
 	@Override
 	public boolean remove(T t) {
-		// TODO Auto-generated method stub
+		// tegenovergesteld add
 		return false;
 	}
 
 	@Override
 	public int size() {
-		return 0;
+		return list.size();
 	}
 
 	@Override
 	public boolean elementExists(Identifier id) {
+		// Find(LinkedList)
 		return false;
 	}
 
 	@Override
 	public SetInterface<T> copy() {
-		// TODO Auto-generated method stub
+		// kijk naar ass1
 		return null;
 	}
 
@@ -61,8 +66,5 @@ public class Set<T extends Comparable<T>> implements SetInterface<T> {
 		return null;
 	}
 
-	@Override
-	public void init() {
 
-	}
 }

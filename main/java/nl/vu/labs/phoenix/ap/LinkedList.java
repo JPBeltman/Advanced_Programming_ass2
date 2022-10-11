@@ -119,12 +119,14 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
         return this;
     }
 
+
     @Override
     public boolean find(E d) {
         // if d.comparetocurr ==0; found
         goToFirst();
         while(currentItem != lastItem){
             if(d.compareTo(currentItem.data) == 0){
+                //currentItem = ;
                 return true;
             } else{
                 if(d.compareTo(currentItem.data)>0) {

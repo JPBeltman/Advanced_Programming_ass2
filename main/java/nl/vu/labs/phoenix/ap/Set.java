@@ -3,7 +3,7 @@ public class Set<T extends Comparable<T>> implements SetInterface<T> {
 	ListInterface<T> list ;
 
 	Set(){
-		list= new LinkedList<>();
+		list= new LinkedList<T>();
 	}
 
 	@Override
@@ -12,10 +12,12 @@ public class Set<T extends Comparable<T>> implements SetInterface<T> {
 	}
 	@Override
 	public boolean add(T t) {
-	// als niet bestaand (elementExists); true
-		list.insert(t);
-	// anders false
+		if(!elementExists(t)){
+			list.insert(t);
+			return true;
+		}else{
 		return false;
+		}
 	}
 
 	@Override
@@ -25,7 +27,10 @@ public class Set<T extends Comparable<T>> implements SetInterface<T> {
 
 	@Override
 	public boolean remove(T t) {
-		// tegenovergesteld add
+		if(list.find(t)){
+			list.remove();
+			return true;
+		}
 		return false;
 	}
 
@@ -35,9 +40,8 @@ public class Set<T extends Comparable<T>> implements SetInterface<T> {
 	}
 
 	@Override
-	public boolean elementExists(Identifier id) {
-		// Find(LinkedList)
-		return false;
+	public boolean elementExists(T t) {
+		return list.find(t);
 	}
 
 	@Override

@@ -28,8 +28,6 @@ public interface IdentifierInterface {
 	    The value of the Identifier has been returned
 	 */
 
-    // your code here
-
     Identifier init(char c);
     /*
     @precondition
@@ -60,7 +58,7 @@ public interface IdentifierInterface {
 		The character at the 'index' position within the Identifier object has been returned
 	*/
 
-    boolean isEqual(Identifier id);
+    boolean equals(Identifier id);
 	/*
 	@precondition
 	@postcondition

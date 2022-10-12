@@ -27,7 +27,7 @@ public interface SetInterface<T extends Comparable<T>> {
 
 	T get();
 	/*
-	PRE  - The Set may not be empty \\TODO verbeteren
+	PRE  -
 	POST - An element of the Set has been returned
 	 */
 
@@ -44,7 +44,7 @@ public interface SetInterface<T extends Comparable<T>> {
 	POST - The number of elements in the Set has been returned
 	 */
 
-	boolean elementExists(Identifier id);
+	boolean elementExists(T t);
 	/*
 	@precondition
 	@postcondition

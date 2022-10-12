@@ -4,13 +4,13 @@ public class Identifier implements IdentifierInterface {
 	StringBuffer id;
 
 	Identifier(){
-		id = new StringBuffer();
-		id.append('c');
+		this.id = new StringBuffer();
+		this.id.append('c');
 	}
 
 	Identifier(Identifier src){
 		this.id = new StringBuffer();
-		id.append('c');
+		this.id.append('c');
 		init(src.getChar(0));
 		for(int i =1;i<src.getSize();i++){
 			addChar(src.getChar(i));
@@ -47,9 +47,12 @@ public class Identifier implements IdentifierInterface {
 	}
 
 	@Override
-	public boolean isEqual(Identifier sb) {
-		// hashcode kunnen gebruiken
-		return this.id.toString().equals(sb.id.toString());
+	public int hashCode(){
+		return this.value().hashCode();
+	}
+	@Override
+	public boolean equals(Identifier sb) { //Object comparable
+		return sb.value().hashCode() == this.value().hashCode();
 	}
 
 }

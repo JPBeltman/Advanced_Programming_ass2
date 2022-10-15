@@ -121,6 +121,10 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
 
     @Override
     public boolean find(E d) {
+
+        if (numElements ==0){
+            return false;
+        }
         goToFirst();
         while(current != last){
             if(d.compareTo(current.data) == 0){
@@ -134,7 +138,8 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
                 }
             }
         }
-        return d.compareTo(current.data) == 0;
+        return false;
+       // return d.compareTo(current.data) == 0;
     }
 
     @Override

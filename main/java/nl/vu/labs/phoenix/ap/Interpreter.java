@@ -125,7 +125,7 @@ public class Interpreter<T extends SetInterface<BigInteger>> implements Interpre
         if (!in.hasNext() && !nextCharIs(in, '}')) {
             throw new APException("Error: no closing bracket for the set");
 
-        }
+        }//
 
 
         return set;

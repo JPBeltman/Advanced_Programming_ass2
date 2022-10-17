@@ -90,4 +90,7 @@ public interface SetInterface<T extends Comparable<T>> {
 		POST - The set is empty
 	 */
 
+	boolean goToNext();
+	boolean goToFirst();
+
 }

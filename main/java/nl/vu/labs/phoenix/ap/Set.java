@@ -46,28 +46,69 @@ public class Set<T extends Comparable<T>> implements SetInterface<T> {
 
 	@Override
 	public SetInterface<T> copy() {
-		// kijk naar ass1
-		return null;
+		SetInterface<T> newSet = new Set();
+		this.goToFirst();
+		for (int i =0; i< this.size();i++){
+			newSet.add(this.list.retrieve());
+			this.list.goToNext();
+		}
+
+		return this;
 	}
 
 	@Override
 	public SetInterface<T> union(SetInterface<T> s) {
-		return null;
+		SetInterface<T> newSet = s.copy();
+
+		this.list.goToFirst();
+		while(this.list.goToNext()){
+			if(!newSet.elementExists(this.get())){
+				newSet.add(this.get());
+			}
+		}
+		return newSet;
 	}
 
 	@Override
 	public SetInterface<T> intersection(SetInterface<T> s) {
-		return null;
-	}
+		SetInterface<T> newSet = this.copy();
+		SetInterface<T> diffSet = difference(s);
 
+		diffSet.goToFirst();
+
+		while(diffSet.goToNext()){
+			newSet.remove(diffSet.get());
+		}
+
+		return newSet;
+	}
+	@Override
+	public boolean goToNext(){
+		return this.list.goToNext();
+	}
+	@Override
+	public boolean goToFirst(){
+		return this.list.goToFirst();
+	}
 	@Override
 	public SetInterface<T> difference(SetInterface<T> s) {
-		return null;
+		SetInterface<T> newSet = new Set();
+
+		this.list.goToFirst();
+		if(!s.elementExists(this.get())){
+			newSet.add(this.get());
+		}
+		while(this.list.goToNext()){
+			if(!s.elementExists(this.get())){
+				newSet.add(this.get());
+			}
+		}
+		return newSet;
 	}
 
 	@Override
 	public SetInterface<T> symmetricDifference(SetInterface<T> s) {
-		return null;
+		return union(s).difference(intersection(s));
 	}
 
 

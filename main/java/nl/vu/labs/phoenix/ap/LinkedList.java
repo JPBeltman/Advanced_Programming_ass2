@@ -139,7 +139,6 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
             }
         }
         return false;
-       // return d.compareTo(current.data) == 0;
     }
 
     @Override
@@ -196,6 +195,7 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
 
     @Override
     public ListInterface<E> copy() {
-        return null;
+
+        return this;
     }
 }

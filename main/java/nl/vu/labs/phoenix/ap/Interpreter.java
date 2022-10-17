@@ -14,6 +14,11 @@ import java.util.regex.Pattern;
 public class Interpreter<T extends SetInterface<BigInteger>> implements InterpreterInterface<T> {
     HashMap<IdentifierInterface, T> map = new HashMap<>();
 
+    final static char SET_OPENING_BRACKET = '{';
+    final static char SET_CLOSING_BRACKET = '{';
+    final static char COMPLEX_FACTOR_OPENING_BRACKET = '(';
+    final static char COMPLEX_FACTOR_CLOSING_BRACKET = '(';
+
     @Override
     public T getMemory(String v) {
         //TODO Implement me
@@ -79,55 +84,56 @@ public class Interpreter<T extends SetInterface<BigInteger>> implements Interpre
 
     }
 
-    SetInterface<BigInteger> doComplexFactor(Scanner in) throws APException {
+    SetInterface<BigInteger> createComplexFactor(Scanner in) throws APException {
         SetInterface<BigInteger> set ;
 
         set = doExpression(in);
-        if (!nextCharIs(in, ')')) {
-            throw new APException("Error: ')'expected");
+
+        return set;
+    }
+    SetInterface<BigInteger> doComplexFactor(Scanner in) throws APException {
+        SetInterface<BigInteger> set ;
+       StringBuffer complexFactorContents = new StringBuffer();
+        in.useDelimiter("");
+        while(in.hasNext() && !nextCharIs(in,')')){
+          if(nextCharIs(in,' ')){
+              nextChar(in);
+          }
+            complexFactorContents.append(in.next());
         }
+        System.out.println(complexFactorContents);
+        set = createComplexFactor(new Scanner(complexFactorContents.toString()));
+        //set = doExpression(in);
         return set;
     }
 
-
-    SetInterface<BigInteger> doSet(Scanner in) throws APException {
+    SetInterface<BigInteger> createSet(Scanner in) throws APException {
         SetInterface<BigInteger> set = new Set<>();
-        //System.out.println(in.next());
 
-        if(nextCharIs(in,'}')){
-            nextChar(in);
-            return set;
-        }
-        if(in.hasNext("[0-9]+}")){
-            BigInteger b = new BigInteger(String.valueOf(in.next().charAt(0)));
-            set.add(b);
-            System.out.println("in last el");
-            return set;
-        }
-        in.skip("\\s*");
         in.useDelimiter(",");
-        while (in.hasNext() && !nextCharIs(in,'}')) {
-            System.out.println("in loop");
-
-            if(in.hasNext("[0-9]+}")){
-                BigInteger b = new BigInteger(String.valueOf(in.next().charAt(0)));
-                set.add(b);
-                System.out.println("in last el");
-                return set;
-            }
-           // System.out.println(in.next());
+        while (in.hasNext() ) {
             if(!nextCharIsDigit(in)){
                 throw new APException("Error: Only natural numbers allowed");
             }
             set.add(in.nextBigInteger());
 
         }
-        if (!in.hasNext() && !nextCharIs(in, '}')) {
-            throw new APException("Error: no closing bracket for the set");
+        return set;
+    }
+    SetInterface<BigInteger> doSet(Scanner in) throws APException {
+        SetInterface<BigInteger> set;
+        StringBuffer setContents = new StringBuffer();
 
-        }//
+        in.useDelimiter("");
+        while(in.hasNext() && !nextCharIs(in,'}')){
+            if(nextCharIs(in, ' ')){
+                nextChar(in);
+            }else{
+            setContents.append(in.next());
+            }
+        }
 
-
+        set = createSet(new Scanner(setContents.toString()));
         return set;
     }
 
@@ -139,15 +145,14 @@ public class Interpreter<T extends SetInterface<BigInteger>> implements Interpre
         if (nextCharIsLetter(in)) {
             map.get(in.next());
             readID(in);
-        } else if (nextCharIs(in, '{')) {
+        } else if (nextCharIs(in, SET_OPENING_BRACKET)) {
             nextChar(in);
-            StringBuffer setContents = new StringBuffer();
-
             set = doSet(in);
-
-        } else if (nextCharIs(in, '(')) {
+            checkCharacter(in,SET_CLOSING_BRACKET);
+        } else if (nextCharIs(in, COMPLEX_FACTOR_OPENING_BRACKET)) {
             nextChar(in);
-            doComplexFactor(in);
+            set = doComplexFactor(in);
+            checkCharacter(in,COMPLEX_FACTOR_CLOSING_BRACKET);
         } else {
             throw new APException("Error: Factor does not start with identifier or is missing an opening bracket for complex factor or set");
         }
@@ -159,7 +164,7 @@ public class Interpreter<T extends SetInterface<BigInteger>> implements Interpre
      */
     SetInterface<BigInteger> doTerm(Scanner in) throws APException {
         SetInterface<BigInteger> set;
-
+        in.skip("\\s*");
         set = doFactor(in);
         while(isMultiplOp(in)){
             set.intersection(doFactor(in));
@@ -171,23 +176,31 @@ public class Interpreter<T extends SetInterface<BigInteger>> implements Interpre
         return nextCharIs(in, '*');
     }
 
+    SetInterface<BigInteger> doAdditiveOperation(char operator, SetInterface set1, SetInterface set2){
+        SetInterface<BigInteger> set = new Set();
+
+
+
+        return set;
+    }
     SetInterface<BigInteger> doExpression(Scanner in) throws APException {
         SetInterface<BigInteger> set;
         in.skip("\\s*");
         set = doTerm(in);
 
         if(in.hasNext() && !isAdditiveOperator(in)){
-            throw new APException("Error: no additive operator while more terms exist");
+            throw new APException("Error: no additive operator while more terms exist/ missing or unknown operator");
         }
 
         while(isAdditiveOperator(in)){
             SetInterface<BigInteger> set2 = null;
             char operator = nextChar(in);
+           // set = doAdditiveOperation(operator, set,set2);
             set2 = doTerm(in);
             switch (operator){
-                case '+':  set.union(set2);
-                case '-':  set.difference(set2);
-                case '|': set.symmetricDifference(set2);
+                case '+': return set.union(set2);
+                case '-':  return set.difference(set2);
+                case '|': return set.symmetricDifference(set2);
             }
 
         }
@@ -198,7 +211,9 @@ public class Interpreter<T extends SetInterface<BigInteger>> implements Interpre
     }
 
     void doAssignment(Scanner in) throws APException {
+        // delimiter op '='
         IdentifierInterface id = readID(in);
+
         T set = (T) doExpression(in);
 
 
@@ -259,7 +274,7 @@ public class Interpreter<T extends SetInterface<BigInteger>> implements Interpre
     void checkCharacter(Scanner in, char c) throws APException {
         if (!nextCharIs(in, c)) {
             String s = "";
-            throw new APException("Expected %s" + c);
+            throw new APException("Expected : " + c);
         }
         nextChar(in);
     }

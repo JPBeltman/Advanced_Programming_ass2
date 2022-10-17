@@ -58,7 +58,7 @@ public interface IdentifierInterface {
 		The character at the 'index' position within the Identifier object has been returned
 	*/
 
-    boolean equals(Identifier id);
+    boolean equals(Object obj);
 	/*
 	@precondition
 	@postcondition

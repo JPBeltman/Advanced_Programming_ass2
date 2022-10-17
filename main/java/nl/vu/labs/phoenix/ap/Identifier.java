@@ -51,8 +51,8 @@ public class Identifier implements IdentifierInterface {
 		return this.value().hashCode();
 	}
 	@Override
-	public boolean equals(Identifier sb) { //Object comparable
-		return sb.value().hashCode() == this.value().hashCode();
+	public boolean equals(Object obj) { //Object comparable
+		return obj.hashCode() == this.value().hashCode();
 	}
 
 }

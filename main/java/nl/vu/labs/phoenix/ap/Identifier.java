@@ -7,6 +7,10 @@ public class Identifier implements IdentifierInterface {
 		this.id = new StringBuffer();
 		this.id.append('c');
 	}
+	Identifier(char c){
+		this.id = new StringBuffer();
+		this.id.append(c);
+	}
 
 	Identifier(Identifier src){
 		this.id = new StringBuffer();

@@ -111,11 +111,19 @@ public class Interpreter<T extends SetInterface<BigInteger>> implements Interpre
 
     SetInterface<BigInteger> createSet(Scanner in) throws APException {
         SetInterface<BigInteger> set = new Set<>();
-        in.skip("\\s*");
+        //in.skip("[\\s*]");
+
         if(!nextCharIsDigit(in)) {
-            if(nextCharIs(in,SET_CLOSING_BRACKET)){
+            if(nextCharIs(in,' ')){
+                nextChar(in);
+                System.out.println(" success");
+            }else if(nextCharIs(in,SET_CLOSING_BRACKET)){
+                System.out.println("great success");
                 return set;
             }else{
+               /* if(nextCharIs(in,SET_DELIMITER)){
+
+                }*/
                 throw new APException(SET_STARTING_ERROR);
             }
         }else{
@@ -124,6 +132,10 @@ public class Interpreter<T extends SetInterface<BigInteger>> implements Interpre
 
         while(nextCharIs(in,SET_DELIMITER)){
             checkCharacter(in,SET_DELIMITER);
+            if(nextCharIs(in,' ')){
+                nextChar(in);
+
+            }
             if (nextCharIsDigit(in)) {
                 set.add(in.nextBigInteger());
             }

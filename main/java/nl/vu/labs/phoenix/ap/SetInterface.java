@@ -52,6 +52,7 @@ public interface SetInterface<T extends Comparable<T>> {
 		False; the Identifier object given in the parameter is not equal to any Identifier object in the set
 	 */
 
+	StringBuffer printSet();
 	SetInterface<T> copy();
 	/*
 	PRE  -
@@ -90,7 +91,6 @@ public interface SetInterface<T extends Comparable<T>> {
 		POST - The set is empty
 	 */
 
-	boolean goToNext();
-	boolean goToFirst();
+
 
 }

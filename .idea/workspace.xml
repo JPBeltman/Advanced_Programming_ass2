@@ -7,9 +7,7 @@
     <list default="true" id="46da1e3f-2994-486a-9f64-9b10d66a224c" name="Changes" comment="zat:&#10;&#10;ebnf">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/java/nl/vu/labs/phoenix/ap/Identifier.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/java/nl/vu/labs/phoenix/ap/Identifier.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/java/nl/vu/labs/phoenix/ap/IdentifierInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/java/nl/vu/labs/phoenix/ap/IdentifierInterface.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/java/nl/vu/labs/phoenix/ap/Interpreter.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/java/nl/vu/labs/phoenix/ap/Interpreter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/java/nl/vu/labs/phoenix/ap/LinkedList.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/java/nl/vu/labs/phoenix/ap/LinkedList.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/java/nl/vu/labs/phoenix/ap/Set.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/java/nl/vu/labs/phoenix/ap/Set.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/java/nl/vu/labs/phoenix/ap/SetInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/java/nl/vu/labs/phoenix/ap/SetInterface.java" afterDir="false" />
     </list>
@@ -54,7 +52,7 @@
     "settings.editor.selected.configurable": "profiler.jvm"
   }
 }]]></component>
-  <component name="RunManager" selected="JUnit.SyntaxTest.priorityTests">
+  <component name="RunManager" selected="Application.Main">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="nl.vu.labs.phoenix.ap.Main" />
       <module name="main" />
@@ -104,11 +102,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.SyntaxTest.priorityTests" />
-        <item itemvalue="JUnit.SyntaxTest.parenthesisBalanceTests" />
-        <item itemvalue="JUnit.SyntaxTest.setSyntaxTests" />
         <item itemvalue="Application.Main" />
         <item itemvalue="JUnit.SyntaxTest.identifierTests" />
+        <item itemvalue="JUnit.SyntaxTest.parenthesisBalanceTests" />
+        <item itemvalue="JUnit.SyntaxTest.priorityTests" />
+        <item itemvalue="JUnit.SyntaxTest.setSyntaxTests" />
       </list>
     </recent_temporary>
   </component>
@@ -123,7 +121,7 @@
       <workItem from="1665483124641" duration="12608000" />
       <workItem from="1665566041680" duration="4194000" />
       <workItem from="1665747546893" duration="16170000" />
-      <workItem from="1665830068075" duration="15570000" />
+      <workItem from="1665830068075" duration="21571000" />
     </task>
     <task id="LOCAL-00001" summary="na wg">
       <created>1665570362100</created>
@@ -146,7 +144,14 @@
       <option name="project" value="LOCAL" />
       <updated>1665836654690</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="zat:&#10;&#10;ebnf">
+      <created>1666000491367</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1666000491367</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

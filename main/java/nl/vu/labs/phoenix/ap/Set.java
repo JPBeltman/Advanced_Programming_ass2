@@ -20,6 +20,15 @@ public class Set<T extends Comparable<T>> implements SetInterface<T> {
 		}
 	}
 
+	public StringBuffer printSet(){
+		StringBuffer result =new StringBuffer();
+		this.list.goToFirst();
+		result.append(this.get());
+		while(this.list.goToNext()){
+			result.append(this.get());
+		}
+		return result;
+	}
 	@Override
 	public T get() {
 		return list.retrieve();
@@ -46,8 +55,8 @@ public class Set<T extends Comparable<T>> implements SetInterface<T> {
 
 	@Override
 	public SetInterface<T> copy() {
-		SetInterface<T> newSet = new Set();
-		this.goToFirst();
+		SetInterface<T> newSet = new Set<>();
+		this.list.goToFirst();
 		for (int i =0; i< this.size();i++){
 			newSet.add(this.list.retrieve());
 			this.list.goToNext();
@@ -74,22 +83,15 @@ public class Set<T extends Comparable<T>> implements SetInterface<T> {
 		SetInterface<T> newSet = this.copy();
 		SetInterface<T> diffSet = difference(s);
 
-		diffSet.goToFirst();
+		/*diffSet.goToFirst();
 
 		while(diffSet.goToNext()){
 			newSet.remove(diffSet.get());
-		}
+		}*/
 
 		return newSet;
 	}
-	@Override
-	public boolean goToNext(){
-		return this.list.goToNext();
-	}
-	@Override
-	public boolean goToFirst(){
-		return this.list.goToFirst();
-	}
+
 	@Override
 	public SetInterface<T> difference(SetInterface<T> s) {
 		SetInterface<T> newSet = new Set();

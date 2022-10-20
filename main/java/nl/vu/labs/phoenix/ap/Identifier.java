@@ -56,8 +56,11 @@ public class Identifier implements IdentifierInterface {
 	}
 	@Override
 	public boolean equals(Object obj) { //Object comparable
-		//obj.getClass() ==
-		return obj.hashCode() == this.hashCode();
+		if(obj instanceof Identifier){ //checked class, onderliggende class + null
+			Identifier other = (Identifier) obj;
+			return other.value().equals(this.value());
+		}
+		return false;
 	}
 
 }

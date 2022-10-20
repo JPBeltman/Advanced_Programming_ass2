@@ -52,7 +52,7 @@ public interface SetInterface<T extends Comparable<T>> {
 		False; the Identifier object given in the parameter is not equal to any Identifier object in the set
 	 */
 
-	StringBuffer printSet();
+	String printSet();
 	SetInterface<T> copy();
 	/*
 	PRE  -

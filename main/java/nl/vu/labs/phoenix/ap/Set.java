@@ -1,6 +1,6 @@
 package nl.vu.labs.phoenix.ap;
 public class Set<T extends Comparable<T>> implements SetInterface<T> {
-	ListInterface<T> list ;
+	private ListInterface<T> list ;
 
 	Set(){
 		list= new LinkedList<T>();
@@ -12,32 +12,39 @@ public class Set<T extends Comparable<T>> implements SetInterface<T> {
 	}
 	@Override
 	public boolean add(T t) {
-		if(!elementExists(t)){
-			list.insert(t);
+		if(!this.elementExists(t)){
+
+			this.list.insert(t);
 			return true;
 		}else{
-		return false;
+			System.out.println("Element exists");
+			return false;
 		}
 	}
 
-	public StringBuffer printSet(){
+	public String printSet(){
 		StringBuffer result =new StringBuffer();
+		if(size()>0){
 		this.list.goToFirst();
 		result.append(this.get());
+
 		while(this.list.goToNext()){
+			result.append(',');
 			result.append(this.get());
+
 		}
-		return result;
+		}
+		return result.toString();
 	}
 	@Override
 	public T get() {
-		return list.retrieve();
+		return this.list.retrieve();
 	}
 
 	@Override
 	public boolean remove(T t) {
-		if(list.find(t)){
-			list.remove();
+		if(this.list.find(t)){
+			this.list.remove();
 			return true;
 		}
 		return false;
@@ -45,71 +52,142 @@ public class Set<T extends Comparable<T>> implements SetInterface<T> {
 
 	@Override
 	public int size() {
-		return list.size();
+		return this.list.size();
 	}
 
 	@Override
 	public boolean elementExists(T t) {
-		return list.find(t);
+		return this.list.find(t);
 	}
 
 	@Override
 	public SetInterface<T> copy() {
-		SetInterface<T> newSet = new Set<>();
-		this.list.goToFirst();
-		for (int i =0; i< this.size();i++){
-			newSet.add(this.list.retrieve());
-			this.list.goToNext();
-		}
+		//System.out.println("Starting copy");
+		SetInterface<T> newSet = new Set<T>();
+		if(size()>0){
 
-		return this;
-	}
+			this.list.goToFirst();
+			newSet.add(this.get());
 
-	@Override
-	public SetInterface<T> union(SetInterface<T> s) {
-		SetInterface<T> newSet = s.copy();
+			while(this.list.goToNext()){
 
-		this.list.goToFirst();
-		while(this.list.goToNext()){
-			if(!newSet.elementExists(this.get())){
 				newSet.add(this.get());
 			}
 		}
+		//System.out.println("Returning copy");
 		return newSet;
 	}
 
+	/*@Override
+	public SetInterface<T> union(SetInterface<T> s) {
+		System.out.println("Start union");
+		if(s.size() ==0){
+			return this.copy();
+		}else if(this.size() == 0){
+			return s.copy();
+		}
+
+		SetInterface<T> newSet = new Set<T>();
+
+		System.out.println(this.printSet());
+		System.out.println("New set");
+		System.out.println(newSet.printSet());
+
+
+		if(this.size()>0) {
+			System.out.printf("num elements: %d \n",this.size());
+			this.list.goToFirst();
+			if(this.list.find(this.get())){
+				System.out.println("EXISTS");
+			}
+			newSet.add(this.get());
+
+			//System.out.println(newSet.printSet());
+			//System.out.println("new set");
+			while (this.list.goToNext()) {
+				//System.out.println(newSet.printSet());
+				//System.out.println(elementExists(this.get()));
+				newSet.add(this.get());
+			}
+			System.out.println("done UNION");
+			//System.out.println(newSet.printSet());
+		}
+		//System.out.println(newSet.printSet());
+		return newSet;
+	}*/
 	@Override
-	public SetInterface<T> intersection(SetInterface<T> s) {
-		SetInterface<T> newSet = this.copy();
-		SetInterface<T> diffSet = difference(s);
+	public SetInterface<T> union(SetInterface<T> s) {
+		//System.out.println("Start union");
+		//System.out.printf("Current set: %s \n",this.printSet());
 
-		/*diffSet.goToFirst();
+		if(s.size() ==0){
+			return this.copy();
+		}else if(this.size() == 0){
+			return s.copy();
+		}
 
-		while(diffSet.goToNext()){
-			newSet.remove(diffSet.get());
-		}*/
+		SetInterface<T> newSet = s.copy();
+		//System.out.printf("copy of addSet: %s \n",newSet.printSet());
+
+		this.list.goToFirst();
+		if (!newSet.elementExists(this.get())){
+			newSet.add(this.get());
+		}
+
+		while(this.list.goToNext()){
+			if (!newSet.elementExists(this.get())){
+				newSet.add(this.get());
+			}
+		}
+		//System.out.printf("return of addSet: %s \n",newSet.printSet());
 
 		return newSet;
+	}
+	@Override
+	public SetInterface<T> intersection(SetInterface<T> s) {
+		SetInterface<T> diffSet = this.difference(s);
+
+		if(s.equals(this)){
+			return this.copy();
+		}
+
+		return this.difference(diffSet);
 	}
 
 	@Override
 	public SetInterface<T> difference(SetInterface<T> s) {
-		SetInterface<T> newSet = new Set();
+		//System.out.println("In difference");
 
-		this.list.goToFirst();
-		if(!s.elementExists(this.get())){
-			newSet.add(this.get());
+		//System.out.println(newSet.printSet());
+		if(this.size() ==0 || s.size() ==0){
+			return this.copy();
 		}
-		while(this.list.goToNext()){
-			if(!s.elementExists(this.get())){
-				newSet.add(this.get());
+
+		SetInterface<T> newSet = this.copy();
+			this.list.goToFirst();
+			if(s.elementExists(this.get())) {
+				newSet.remove(this.get());
 			}
-		}
+			while(this.list.goToNext()){
+				if(s.elementExists(this.get())) {
+					newSet.remove(this.get());
+				}
+			}
+		//System.out.printf("copy of addSet: %s \n",newSet.printSet());
+
 		return newSet;
 	}
 
 	@Override
 	public SetInterface<T> symmetricDifference(SetInterface<T> s) {
+		System.out.println("In sym. diff");
+		if(s.size() ==0){
+			return this.copy();
+		}else if(this.size() == 0){
+			System.out.println("Is empty");
+			return s.copy();
+		}
+
 		return union(s).difference(intersection(s));
 	}
 

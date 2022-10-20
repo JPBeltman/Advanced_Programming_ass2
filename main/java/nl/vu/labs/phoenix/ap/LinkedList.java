@@ -15,13 +15,13 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
         public Node(E data) {
             this(data, null, null);
         }
+
         //if size >0
         public Node(E data, Node prior, Node next) {
             this.data = data == null ? null : data;
             this.prior = prior;
             this.next = next;
         }
-
     }
 
     @Override
@@ -31,12 +31,12 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
 
     @Override
     public ListInterface<E> init() {
-       numElements =0;
-       last = null;
-       current =null;
-       first =null;
+        numElements = 0;
+        last = null;
+        current = null;
+        first = null;
 
-       return this;
+        return this;
     }
 
     @Override
@@ -48,29 +48,29 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
     // smaller elements first
     // a.compareTo(b): <0 if a before b in order, =0 equal, >0 b be4 a
     public ListInterface<E> insert(E d) {
-        if(this.size() == 0) {
+        if (this.size() == 0) {
             current = first = last = new Node(d);
-            numElements +=1;
-        // 1. 'f', 2. 'c'
-        } else if(d.compareTo(first.data) <=0){// c < f: current = c; c.next = f; first = c;
-            current = new Node(d,null, first);
+            numElements += 1;
+            // 1. 'f', 2. 'c'
+        } else if (d.compareTo(first.data) <= 0) {// c < f: current = c; c.next = f; first = c;
+            current = new Node(d, null, first);
             first = current;
             // items' prior after current item = current item
             current.next.prior = current;
-            numElements +=1;
-        // 1. 'c', 2. 'f'
-        } else if(d.compareTo(last.data) >=0){ // f > c: current = f; f.prior = c,
-            current = new Node(d, last,null);
+            numElements += 1;
+            // 1. 'c', 2. 'f'
+        } else if (d.compareTo(last.data) >= 0) { // f > c: current = f; f.prior = c,
+            current = new Node(d, last, null);
             last = current;
             // items' next be4 current item = current
             current.prior.next = current;
-            numElements +=1;
-        }else{ // item somewhere within bounds of list
+            numElements += 1;
+        } else { // item somewhere within bounds of list
             //start at first item and find spot;
             // iterate while d is larger than the next of current item
             // if not: insert d there
             goToFirst();
-            while(d.compareTo(current.next.data)>=0){
+            while (d.compareTo(current.next.data) >= 0) {
                 goToNext();
             }
             //inserting d:
@@ -80,7 +80,7 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
             current = new Node(d, current, current.next);
             current.next.prior = current;
             current.prior.next = current;
-            numElements +=1;
+            numElements += 1;
         }
         return this;
     }
@@ -92,28 +92,29 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
 
     @Override
     public ListInterface<E> remove() {
-        if(size() <= 1){
+        if (size() <= 1) {
             this.init();
         } else {
             // curr = first -> next has no prior, curr = next, first = curr
-            if(current == first){
+            if (current == first) {
                 current.next.prior = null;
                 current = current.next;
                 first = current;
-                numElements -=1;
+                numElements -= 1;
             }// curr = first -> next has no prior, curr = next, first = curr
-            else if(current == last){
+            else if (current == last) {
                 current = current.prior;
                 last = current;
-                numElements -=1;
-            }else{
+                numElements -= 1;
+            } else {
                 // the next item prior to the current item is the next of current
                 current.prior.next = current.next;
                 // prior item to next of current item is prior of current
                 current.next.prior = current.prior;
                 // make the new current item the item next to the current current item
                 goToNext();
-                numElements -=1;}
+                numElements -= 1;
+            }
         }
         return this;
     }
@@ -121,34 +122,46 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
 
     @Override
     public boolean find(E d) {
-
-        if (numElements ==0){
+       // System.out.println("In find,");
+        if (this.numElements == 0) {
             return false;
-        }
-        goToFirst();
-        while(current != last){
-            if(d.compareTo(current.data) == 0){
+        } else if (this.numElements == 1) {
+            if (d.compareTo(this.retrieve()) == 0) {
+                //System.out.println("Found element");
                 return true;
-            } else{
-                if(d.compareTo(current.data)>0) {
-                    goToNext();
-                }else{
-                    current = current.prior;
-                    return false;
+            }
+        } else {
+                this.goToFirst();
+                while (this.current != this.last) {
+                    if (d.compareTo(this.retrieve()) == 0) {
+                        //System.out.println("Found element");
+                         return true;
+                    } else {
+                        if (d.compareTo(this.retrieve()) > 0) {
+                            goToNext();
+                        } else {
+                            this.current = this.current.prior;
+                            return false;
+                        }
+                    }
+                }if (d.compareTo(this.retrieve()) == 0) {
+                   //System.out.println("Found element");
+                    return true;
                 }
             }
-        }
+
         return false;
     }
 
+
     @Override
     public boolean goToFirst() {
-        if(numElements ==0){
+        if (numElements == 0) {
             return false;
         }
-        if(current == first) {
+        if (current == first) {
             return true;
-        }else{
+        } else {
             current = first;
             return true;
         }
@@ -156,12 +169,12 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
 
     @Override
     public boolean goToLast() {
-        if(numElements ==0){
+        if (numElements == 0) {
             return false;
         }
-        if(current == last) {
+        if (current == last) {
             return true;
-        } else{
+        } else {
             current = last;
             return true;
         }
@@ -169,10 +182,10 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
 
     @Override
     public boolean goToNext() {
-        if(numElements <= 1){
+        if (numElements <= 1) {
             return false;
         }
-        if(current != last){
+        if (current != last) {
             current = current.next;
             return true;
         } else {
@@ -182,20 +195,29 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
 
     @Override
     public boolean goToPrevious() {
-        if(numElements <=1){
+        if (numElements <= 1) {
             return false;
         }
-        if(current != first){
+        if (current != first) {
             current = current.prior;
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
     @Override
     public ListInterface<E> copy() {
-
-        return this;
+        ListInterface<E> list = new LinkedList<E>();
+        this.goToFirst();
+        list.insert(this.retrieve());
+        while (goToNext()) {
+            list.insert(this.retrieve());
+        }
+        this.goToLast();
+        list.insert(this.retrieve());
+        return list;
     }
+
+
 }

@@ -26,42 +26,38 @@ public class Interpreter<T extends SetInterface<BigInteger>> implements Interpre
     final static String EXPRESSION_ERROR ="Error: no additive operator while more terms exist/ missing or unknown operator";
     @Override
     public T getMemory(String v) {
-        //TODO Implement me
-        // Read the identifier v from memory and return
+
         //v.hashCode();
-        System.out.printf("%s %s \n", v, map.get(v));
-        return map.get(v);
-    }
+        //System.out.printf("%s %s \n", v, map.get(v));
 
-    IdentifierInterface readTheRest(Scanner in, IdentifierInterface id) throws APException {
-        in.useDelimiter("");
-        while (in.hasNext()) {
-            if (in.hasNext("[a-zA-Z0-9]")) {
-                id.addChar(in.next().charAt(0));
-            } else {
-                return id;
+        //make ID aan en vergelijk die
+        // .get gebruikt equals al
+        // gebruik readID
+        Scanner idScanner = new Scanner(v);
+        try {
+            IdentifierInterface id = readID(idScanner);
+            return map.get(id);
+        }catch (APException e){
+            e.printStackTrace();
+        }
+        /*for(IdentifierInterface id :map.keySet()){
+            if(id.value().equals(v)){
+                //System.out.println(map.get(id));
+                //System.out.println("value returned");
+                return map.get(id);
             }
-            throw new APException("Wrong after 1st");
-        }
-        return id;
-    }
 
-    IdentifierInterface readFirstLetter(Scanner in, IdentifierInterface id) throws APException {
-       in.useDelimiter("");
-        if (in.hasNext("[a-zA-Z]")) {
-            id.init(in.next().charAt(0));
-        } else {
-            throw new APException("Wrong first letter");
-        }
-        readTheRest(in, id);
-        return id;
+        }*/
+        System.out.println("no key found");
+
+        return null;
     }
 
     char readLetter(Scanner in ) throws APException {
         if(nextCharIsLetter(in)){
             return nextChar(in);
         }else{
-            throw new APException("Wrong character");
+            throw new APException("Error: Identifiers should start with a letter");
         }
     }
 
@@ -70,14 +66,9 @@ public class Interpreter<T extends SetInterface<BigInteger>> implements Interpre
         //System.out.println("Creating ID");
         in.useDelimiter("");
         IdentifierInterface id = new Identifier();
-
-        while (isWhiteSpace(in)) {
-            nextChar(in);
-        }
-
+       isSpace(in);
         char c = readLetter(in);
         id.init(c);
-
         while(nextCharIsAlphaNum(in)){
             id.addChar(nextChar(in));
         }
@@ -86,111 +77,149 @@ public class Interpreter<T extends SetInterface<BigInteger>> implements Interpre
         return id;
     }
 
-    SetInterface<BigInteger> createComplexFactor(Scanner in) throws APException {
-        SetInterface<BigInteger> set ;
 
-        set = doExpression(in);
-
-        return set;
-    }
-    SetInterface<BigInteger> doComplexFactor(Scanner in) throws APException {
-        SetInterface<BigInteger> set ;
-        StringBuffer complexFactorContents = new StringBuffer();
-        in.useDelimiter("");
-        while(in.hasNext() && !nextCharIs(in,COMPLEX_FACTOR_OPENING_BRACKET)){
-          if(nextCharIs(in,' ')){
-              nextChar(in);
-          }
-            complexFactorContents.append(in.next());
+    T complexFactor(Scanner in) throws APException {
+        int open_factors = 0;
+        T set ;
+        checkCharacter(in,COMPLEX_FACTOR_OPENING_BRACKET);
+        if(nextCharIs(in, '(')){
+            open_factors +=1;
         }
-        //System.out.println(complexFactorContents);
-        set = createComplexFactor(new Scanner(complexFactorContents.toString()));
-        //set = doExpression(in);
-        return set;
-    }
+        System.out.printf("Open factors: %d \n", open_factors);
+        set = expression(in);
+        System.out.printf("Open factors: %d \n", open_factors);
 
-    SetInterface<BigInteger> createSet(Scanner in) throws APException {
-        SetInterface<BigInteger> set = new Set<>();
-        //in.skip("[\\s*]");
-
-        if(!nextCharIsDigit(in)) {
-            if(nextCharIs(in,' ')){
-                nextChar(in);
-                System.out.println(" success");
-            }else if(nextCharIs(in,SET_CLOSING_BRACKET)){
-                System.out.println("great success");
-                return set;
-            }else{
-               /* if(nextCharIs(in,SET_DELIMITER)){
-
-                }*/
-                throw new APException(SET_STARTING_ERROR);
-            }
-        }else{
-            set.add(in.nextBigInteger());
+        while(open_factors >0 ){
+            checkCharacter(in, ')');
+            open_factors-=1;
         }
 
+
+        System.out.printf("Open factors: %d \n", open_factors);
+
+        checkCharacter(in,COMPLEX_FACTOR_CLOSING_BRACKET);
+        if(open_factors ==0 && nextCharIs(in,')')){
+            throw new APException("Missing opening");
+        }
+        return set;
+    }
+
+    T set(Scanner in) throws APException {
+        T set = (T) new Set<BigInteger>();
+        checkCharacter(in,SET_OPENING_BRACKET);
+        isSpace(in);
+        if(nextCharIs(in,'}')){
+            checkCharacter(in,'}');
+            return set;
+        }
+        set.add(naturalNumber(in));
+        isSpace(in);
         while(nextCharIs(in,SET_DELIMITER)){
             checkCharacter(in,SET_DELIMITER);
-            if(nextCharIs(in,' ')){
-                nextChar(in);
-
+            isSpace(in);
+            if(nextCharIsDigit(in)) {
+                BigInteger bint = naturalNumber(in);
+                if(!set.elementExists(bint)){
+                set.add(bint);
+                }
+                isSpace(in);
+            } else{
+                throw new APException("Wrong syntax for set");
             }
-            if (nextCharIsDigit(in)) {
-                set.add(in.nextBigInteger());
-            }
-
         }
-        //System.out.println(set.printSet().toString());
+        isSpace(in);
+        checkCharacter(in,SET_CLOSING_BRACKET);
         return set;
     }
-    SetInterface<BigInteger> doSet(Scanner in) throws APException {
-        SetInterface<BigInteger> set;
-        /*StringBuffer setContents = new StringBuffer();
 
-        in.useDelimiter("");
-        while(in.hasNext() && !nextCharIs(in,'}')){
-            if(nextCharIs(in, ' ')){
-                nextChar(in);
-            }else{
-            setContents.append(in.next());
+
+    BigInteger naturalNumber(Scanner in) throws APException{
+        BigInteger integer ;
+        if (nextDigitIsZero(in)) {
+            integer =  new BigInteger(String.valueOf(zero(in)));
+            if(nextCharIsDigit(in)){
+                throw new APException("natural numbers cannot start with 0");
             }
-        }*/
-
-        set = createSet(in);
-        return set;
+            return integer;
+        }else if(nextDigitIsPositive(in)){
+            integer = new BigInteger(positiveNumber(in));
+            return integer;
+        }else{
+            throw new APException("Not a natural number");
+    }
     }
 
+    String positiveNumber(Scanner in)throws APException{
+        StringBuffer str = new StringBuffer();
+        str.append(notZero(in));
+
+        while (nextCharIsDigit(in)){
+           str.append(number(in));
+        }
+        return str.toString();
+    }
+    char number (Scanner in) throws APException{
+        if(nextDigitIsPositive(in)){
+            return notZero(in);
+        }else {
+            return zero(in);
+        }
+    }
+
+    char notZero(Scanner in) throws APException {
+        if(!nextDigitIsPositive(in)){
+            throw new APException("Is a zero while it's not allowed");
+        }else {
+            return nextChar(in);
+        }
+    }
+    char zero(Scanner in) throws APException {
+        if(!nextDigitIsZero(in)){
+            throw new APException("Is not a zero while needed");
+        }else {
+            return nextChar(in);
+        }
+    }
+    boolean nextDigitIsPositive(Scanner in){
+        return in.hasNext("[1-9]");
+    }
+    boolean nextDigitIsZero(Scanner in){
+        return in.hasNext("0");
+    }
     /*
     factor = identifier | complex_factor | set
      */
-    SetInterface<BigInteger> doFactor(Scanner in) throws APException {
-        SetInterface<BigInteger> set;
+    T factor(Scanner in) throws APException {
+        T set;
         if (nextCharIsLetter(in)) {
-            set =map.get(in.next());
+            StringBuffer id = new StringBuffer();
+            while(nextCharIsLetter(in)||nextCharIsDigit(in)){
+                id.append(nextChar(in));
+            }
+            set = getMemory(id.toString());
         } else if (nextCharIs(in, SET_OPENING_BRACKET)) {
-            nextChar(in);
-            set = createSet(in);
-            checkCharacter(in,SET_CLOSING_BRACKET);
+            set = set(in);
         } else if (nextCharIs(in, COMPLEX_FACTOR_OPENING_BRACKET)) {
-            nextChar(in);
-            set = doComplexFactor(in);
-            checkCharacter(in,COMPLEX_FACTOR_CLOSING_BRACKET);
+            set = complexFactor(in);
         } else {
             throw new APException(FACTOR_ERROR);
         }
+        isSpace(in);
         return set;
     }
 
     /*
     term = factor {multipl_op ' ' set}
      */
-    SetInterface<BigInteger> doTerm(Scanner in) throws APException {
-        SetInterface<BigInteger> set;
-        in.skip("\\s*");
-        set = doFactor(in);
+    T term(Scanner in) throws APException {
+        T set;
+        isSpace(in);
+        set = factor(in);
         while(isMultiplOp(in)){
-           set = set.intersection(doFactor(in));
+            nextChar(in);
+            isSpace(in);
+            set = (T) set.intersection(factor(in));
+            isSpace(in);
         }
         return set;
     }
@@ -199,26 +228,47 @@ public class Interpreter<T extends SetInterface<BigInteger>> implements Interpre
         return nextCharIs(in, '*');
     }
 
-    SetInterface<BigInteger> doExpression(Scanner in) throws APException {
-        SetInterface<BigInteger> set;
-        in.skip("\\s*");
-        set = doTerm(in);
+    char AdditiveOperator(Scanner in) throws APException {
+        if(!isAdditiveOperator(in)){
+            throw new APException("Error: Additive operator expected");
+        }
+        return nextChar(in);
+    }
 
-        if(in.hasNext() && !isAdditiveOperator(in)){
+    T additiveOperation(Scanner in, T set) throws APException {
+
+        isSpace(in);
+
+        if (nextCharIs(in, '+')) {
+            checkCharacter(in,'+');
+                return (T) set.union(term(in));
+        } else if(nextCharIs(in,'-')){
+            checkCharacter(in,'-');
+            return (T) set.difference(term(in));
+        } else if(nextCharIs(in,'|')){
+            checkCharacter(in,'|');
+            return (T) set.symmetricDifference(term(in));
+        }else{
+            throw new APException("Unknown additive operator");
+        }
+    }
+    T expression(Scanner in) throws APException {
+       isSpace(in);
+
+        T set = term(in);
+        isSpace(in);
+        if(in.hasNext() && !(isAdditiveOperator(in) || nextCharIs(in,')'))){
             throw new APException(EXPRESSION_ERROR);
         }
 
+        isSpace(in);
+
         while(isAdditiveOperator(in)){
-            SetInterface<BigInteger> set2;
-            char operator = nextChar(in);
-            set2 = doTerm(in);
-            switch (operator){
-                case '+': return set.union(set2);
-                case '-':  return set.difference(set2);
-                case '|': return set.symmetricDifference(set2);
-            }
+            set = additiveOperation(in,set);
+            isSpace(in);
 
         }
+        isSpace(in);
         return set;
     }
     boolean isAdditiveOperator(Scanner in) {
@@ -226,45 +276,27 @@ public class Interpreter<T extends SetInterface<BigInteger>> implements Interpre
     }
 
     void doAssignment(Scanner in) throws APException {
-        in.skip("\\s*");
-
+        isSpace(in);
         IdentifierInterface id = readID(in);
+        isSpace(in);
         checkCharacter(in,'=');
-        T set = (T) doExpression(in);
+        isSpace(in);
+        T set = expression(in);
+        isSpace(in);
+       // System.out.println(set.printSet());
         //checkCharacter(in,'\n');
-
+        //System.out.println(id.value());
+        //System.out.println(set.printSet());
         map.put(id, set);
+
+        isSpace(in);
     }
 
-    /*
-    statement = print statement: "'?'expression" | assignment: "identifier '=' expression" | comment: "/.."
-     */
-    private void readStatement(Scanner in) throws APException {
-        in.useDelimiter("");
-        in.skip("\\s*");
-        if (nextCharIs(in, '?')) {
+
+    void isSpace(Scanner in){
+        while(nextCharIs(in,' ')){
             nextChar(in);
-            doExpression(in);
-            System.out.println("is express");
-        } else if (nextCharIsLetter(in)) {
-            System.out.println("assignment");
-            doAssignment(in);
-
-        } else if (!nextCharIs(in, '/')) {
-            throw new APException("Error: invalid starting entry for the statement");
         }
-
-
-    }
-
-
-    boolean isEqualsSign(Scanner in) {
-        return in.hasNext("=");
-    }
-
-
-    boolean isWhiteSpace(Scanner in) {
-        return in.hasNext("\\s*");
     }
 
     char nextChar(Scanner in) {
@@ -285,7 +317,6 @@ public class Interpreter<T extends SetInterface<BigInteger>> implements Interpre
 
     void checkCharacter(Scanner in, char c) throws APException {
         if (!nextCharIs(in, c)) {
-            String s = "";
             throw new APException("Expected : " + c);
         }
         nextChar(in);
@@ -294,12 +325,47 @@ public class Interpreter<T extends SetInterface<BigInteger>> implements Interpre
     private boolean nextCharIs(Scanner in, char c) {
         return in.hasNext(Pattern.quote(c + ""));
     }
+    private T printStatement(Scanner in) throws APException {
+        checkCharacter(in,'?');
+        isSpace(in);
+
+        T set = expression(in);
+
+        isSpace(in);
+       //checkCharacter(in,'\n');
+        System.out.println(set.printSet());
+        return set;
+    }
+    /*
+    statement = print statement: "'?'expression" | assignment: "identifier '=' expression" | comment: "/.."
+     */
+    private T statement(Scanner in) throws APException {
+        in.useDelimiter("");
+        isSpace(in);
+        if (nextCharIs(in, '?')) {
+            return printStatement(in);
+        } else if (nextCharIsAlphaNum(in)) {
+            doAssignment(in);
+        } else if (!nextCharIs(in, '/')) {
+            throw new APException("Error: invalid starting entry for a statement");
+        }
+        return null;
+    }
+    private boolean isEndOfLine(Scanner in){
+        isSpace(in);
+        return nextCharIs(in,'\n');
+    }
+    private T program(Scanner in) throws APException {
+        T statement = statement(in);
+        isEndOfLine(in);
+        return statement;
+    }
 
     @Override
     public T eval(String s) {
         Scanner in = new Scanner(s);
         try {
-            readStatement(in);
+            return program(in);
         } catch (APException e) {
             e.printStackTrace();
         }

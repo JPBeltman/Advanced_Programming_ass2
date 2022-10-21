@@ -8,46 +8,44 @@ import java.util.regex.Pattern;
  * A set interpreter for sets of elements of type T
  */
 
-/**
- *
- */
+
 public class Interpreter<T extends SetInterface<BigInteger>> implements InterpreterInterface<T> {
     HashMap<IdentifierInterface, T> map = new HashMap<>();
 
     final static char SET_OPENING_BRACKET = '{';
     final static char SET_CLOSING_BRACKET = '}';
     final static char SET_DELIMITER = ',';
+    final static char COMPLEX_FACTOR_OPENING_BRACKET = '(';
+    final static char COMPLEX_FACTOR_CLOSING_BRACKET = ')';
+
     final static String SET_STARTING_ERROR = "ERROR: a set should start with a natural number";
     final static String SET_WRONG_DIGIT = "Error: Only natural numbers allowed";
     final static String SET_WRONG_SEPARATOR = "Error: values of the set should be separated by a comma";
-    final static char COMPLEX_FACTOR_OPENING_BRACKET = '(';
-    final static char COMPLEX_FACTOR_CLOSING_BRACKET = ')';
+    final static String SET_WRONG_SYNTAX = "Error: Wrong syntax. Should be natNumber {',' natNumber}";
+
+    final static String NATURAL_NUMBERS_POS_CANNOT_START_WITH_0 = "Error: Positive natural numbers cannot start with a 0";
+    final static String NATURAL_NUMBERS_INVALID = "Error: Input is not a valid natural number";
+    final static String NATURAL_NUMBERS_INVALID_ZERO = "Is a zero while it's not allowed";
+    final static String NATURAL_NUMBERS_NOT_ZERO = "ERROR: Expected a zero";
+
+
     final static String FACTOR_ERROR = "Error: Factor does not start with identifier or is missing an opening bracket for complex factor or set";
     final static String EXPRESSION_ERROR ="Error: no additive operator while more terms exist/ missing or unknown operator";
+final static String ADDITIVE_OPERATOR_UNKNOWN_ERROR = "Unknown additive operator";
+final static String ENDOFLINE_INPUT_ERROR = "Error: input detected between end of statement and end of line";
+final static String STATEMENT_INVALID_STARTING_ENTRY="Error: invalid starting entry for a statement";
+final static String PRINT_STATEMENT_ERROR_ENDOFLINE = "Error: input detected between end of statement and end of line";
     @Override
     public T getMemory(String v) {
-
-        //v.hashCode();
-        //System.out.printf("%s %s \n", v, map.get(v));
-
-        //make ID aan en vergelijk die
-        // .get gebruikt equals al
-        // gebruik readID
-        Scanner idScanner = new Scanner(v);
         try {
-            IdentifierInterface id = readID(idScanner);
+            Scanner idScanner = new Scanner(v);
+            IdentifierInterface id = identifier(idScanner);
+            idScanner.close();
             return map.get(id);
         }catch (APException e){
             e.printStackTrace();
         }
-        /*for(IdentifierInterface id :map.keySet()){
-            if(id.value().equals(v)){
-                //System.out.println(map.get(id));
-                //System.out.println("value returned");
-                return map.get(id);
-            }
 
-        }*/
         System.out.println("no key found");
 
         return null;
@@ -62,45 +60,29 @@ public class Interpreter<T extends SetInterface<BigInteger>> implements Interpre
     }
 
 
-    IdentifierInterface readID(Scanner in) throws APException {
-        //System.out.println("Creating ID");
+    IdentifierInterface identifier(Scanner in) throws APException {
         in.useDelimiter("");
         IdentifierInterface id = new Identifier();
-       isSpace(in);
-        char c = readLetter(in);
-        id.init(c);
+
+        isSpace(in);
+
+        id.init(readLetter(in));
         while(nextCharIsAlphaNum(in)){
             id.addChar(nextChar(in));
         }
-        //System.out.println(nextChar(in));
-        //System.out.println("Done creating ID");
         return id;
     }
 
 
     T complexFactor(Scanner in) throws APException {
-        int open_factors = 0;
         T set ;
+
         checkCharacter(in,COMPLEX_FACTOR_OPENING_BRACKET);
-        if(nextCharIs(in, '(')){
-            open_factors +=1;
-        }
-        System.out.printf("Open factors: %d \n", open_factors);
+        isSpace(in);
         set = expression(in);
-        System.out.printf("Open factors: %d \n", open_factors);
-
-        while(open_factors >0 ){
-            checkCharacter(in, ')');
-            open_factors-=1;
-        }
-
-
-        System.out.printf("Open factors: %d \n", open_factors);
-
+        isSpace(in);
         checkCharacter(in,COMPLEX_FACTOR_CLOSING_BRACKET);
-        if(open_factors ==0 && nextCharIs(in,')')){
-            throw new APException("Missing opening");
-        }
+
         return set;
     }
 
@@ -108,23 +90,25 @@ public class Interpreter<T extends SetInterface<BigInteger>> implements Interpre
         T set = (T) new Set<BigInteger>();
         checkCharacter(in,SET_OPENING_BRACKET);
         isSpace(in);
-        if(nextCharIs(in,'}')){
-            checkCharacter(in,'}');
+
+        if(nextCharIs(in,SET_CLOSING_BRACKET)){
+            checkCharacter(in,SET_CLOSING_BRACKET);
             return set;
         }
         set.add(naturalNumber(in));
         isSpace(in);
+
         while(nextCharIs(in,SET_DELIMITER)){
             checkCharacter(in,SET_DELIMITER);
             isSpace(in);
             if(nextCharIsDigit(in)) {
                 BigInteger bint = naturalNumber(in);
                 if(!set.elementExists(bint)){
-                set.add(bint);
+                    set.add(bint);
                 }
                 isSpace(in);
             } else{
-                throw new APException("Wrong syntax for set");
+                throw new APException(SET_WRONG_SYNTAX);
             }
         }
         isSpace(in);
@@ -138,14 +122,14 @@ public class Interpreter<T extends SetInterface<BigInteger>> implements Interpre
         if (nextDigitIsZero(in)) {
             integer =  new BigInteger(String.valueOf(zero(in)));
             if(nextCharIsDigit(in)){
-                throw new APException("natural numbers cannot start with 0");
+                throw new APException(NATURAL_NUMBERS_POS_CANNOT_START_WITH_0);
             }
             return integer;
         }else if(nextDigitIsPositive(in)){
             integer = new BigInteger(positiveNumber(in));
             return integer;
         }else{
-            throw new APException("Not a natural number");
+            throw new APException(NATURAL_NUMBERS_INVALID);
     }
     }
 
@@ -168,14 +152,14 @@ public class Interpreter<T extends SetInterface<BigInteger>> implements Interpre
 
     char notZero(Scanner in) throws APException {
         if(!nextDigitIsPositive(in)){
-            throw new APException("Is a zero while it's not allowed");
+            throw new APException(NATURAL_NUMBERS_INVALID_ZERO);
         }else {
             return nextChar(in);
         }
     }
     char zero(Scanner in) throws APException {
         if(!nextDigitIsZero(in)){
-            throw new APException("Is not a zero while needed");
+            throw new APException(NATURAL_NUMBERS_NOT_ZERO);
         }else {
             return nextChar(in);
         }
@@ -186,17 +170,13 @@ public class Interpreter<T extends SetInterface<BigInteger>> implements Interpre
     boolean nextDigitIsZero(Scanner in){
         return in.hasNext("0");
     }
-    /*
-    factor = identifier | complex_factor | set
-     */
+
     T factor(Scanner in) throws APException {
         T set;
+        isSpace(in);
         if (nextCharIsLetter(in)) {
-            StringBuffer id = new StringBuffer();
-            while(nextCharIsLetter(in)||nextCharIsDigit(in)){
-                id.append(nextChar(in));
-            }
-            set = getMemory(id.toString());
+            IdentifierInterface id = identifier(in);
+            set = map.get(id);
         } else if (nextCharIs(in, SET_OPENING_BRACKET)) {
             set = set(in);
         } else if (nextCharIs(in, COMPLEX_FACTOR_OPENING_BRACKET)) {
@@ -208,13 +188,11 @@ public class Interpreter<T extends SetInterface<BigInteger>> implements Interpre
         return set;
     }
 
-    /*
-    term = factor {multipl_op ' ' set}
-     */
     T term(Scanner in) throws APException {
         T set;
         isSpace(in);
         set = factor(in);
+        isSpace(in);
         while(isMultiplOp(in)){
             nextChar(in);
             isSpace(in);
@@ -226,13 +204,6 @@ public class Interpreter<T extends SetInterface<BigInteger>> implements Interpre
 
     boolean isMultiplOp(Scanner in) {
         return nextCharIs(in, '*');
-    }
-
-    char AdditiveOperator(Scanner in) throws APException {
-        if(!isAdditiveOperator(in)){
-            throw new APException("Error: Additive operator expected");
-        }
-        return nextChar(in);
     }
 
     T additiveOperation(Scanner in, T set) throws APException {
@@ -249,7 +220,7 @@ public class Interpreter<T extends SetInterface<BigInteger>> implements Interpre
             checkCharacter(in,'|');
             return (T) set.symmetricDifference(term(in));
         }else{
-            throw new APException("Unknown additive operator");
+            throw new APException(ADDITIVE_OPERATOR_UNKNOWN_ERROR);
         }
     }
     T expression(Scanner in) throws APException {
@@ -257,10 +228,13 @@ public class Interpreter<T extends SetInterface<BigInteger>> implements Interpre
 
         T set = term(in);
         isSpace(in);
+
         if(in.hasNext() && !(isAdditiveOperator(in) || nextCharIs(in,')'))){
             throw new APException(EXPRESSION_ERROR);
         }
-
+        if(nextCharIs(in,')')){
+            return set;
+        }
         isSpace(in);
 
         while(isAdditiveOperator(in)){
@@ -275,18 +249,17 @@ public class Interpreter<T extends SetInterface<BigInteger>> implements Interpre
         return (nextCharIs(in, '|') || nextCharIs(in, '+') || nextCharIs(in, '-'));
     }
 
-    void doAssignment(Scanner in) throws APException {
+    void assignment(Scanner in) throws APException {
         isSpace(in);
-        IdentifierInterface id = readID(in);
+        IdentifierInterface id = identifier(in);
         isSpace(in);
         checkCharacter(in,'=');
         isSpace(in);
         T set = expression(in);
         isSpace(in);
-       // System.out.println(set.printSet());
-        //checkCharacter(in,'\n');
-        //System.out.println(id.value());
-        //System.out.println(set.printSet());
+        if(in.hasNext() && !isEndOfLine(in)){
+            throw new APException(ENDOFLINE_INPUT_ERROR);
+        }
         map.put(id, set);
 
         isSpace(in);
@@ -330,9 +303,10 @@ public class Interpreter<T extends SetInterface<BigInteger>> implements Interpre
         isSpace(in);
 
         T set = expression(in);
-
+        if(in.hasNext() && !isEndOfLine(in)){
+            throw new APException(PRINT_STATEMENT_ERROR_ENDOFLINE);
+        }
         isSpace(in);
-       //checkCharacter(in,'\n');
         System.out.println(set.printSet());
         return set;
     }
@@ -342,12 +316,13 @@ public class Interpreter<T extends SetInterface<BigInteger>> implements Interpre
     private T statement(Scanner in) throws APException {
         in.useDelimiter("");
         isSpace(in);
+
         if (nextCharIs(in, '?')) {
             return printStatement(in);
         } else if (nextCharIsAlphaNum(in)) {
-            doAssignment(in);
+            assignment(in);
         } else if (!nextCharIs(in, '/')) {
-            throw new APException("Error: invalid starting entry for a statement");
+            throw new APException(STATEMENT_INVALID_STARTING_ENTRY);
         }
         return null;
     }
@@ -358,6 +333,7 @@ public class Interpreter<T extends SetInterface<BigInteger>> implements Interpre
     private T program(Scanner in) throws APException {
         T statement = statement(in);
         isEndOfLine(in);
+        in.close();
         return statement;
     }
 

@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="46da1e3f-2994-486a-9f64-9b10d66a224c" name="Changes" comment="zat:&#10;&#10;ebnf">
+    <list default="true" id="46da1e3f-2994-486a-9f64-9b10d66a224c" name="Changes" comment="26/30 tests.&#10;&#10;TODO:&#10;Syntax&#10;- parenthesis balance&#10;- endOfLine&#10;Calc&#10;- expressionEval&#10;- ComplicExpression">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/java/nl/vu/labs/phoenix/ap/Identifier.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/java/nl/vu/labs/phoenix/ap/Identifier.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/java/nl/vu/labs/phoenix/ap/Interpreter.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/java/nl/vu/labs/phoenix/ap/Interpreter.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -50,20 +49,34 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;profiler.jvm&quot;
   }
 }</component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="JUnit.CalculatorTest">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="nl.vu.labs.phoenix.ap.Main" />
       <module name="main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="nl.vu.labs.phoenix.ap.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="SyntaxTest.identifierTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="CalculatorTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="test" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="CalculatorTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SyntaxTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="test" />
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="SyntaxTest" />
-      <option name="METHOD_NAME" value="identifierTests" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -88,23 +101,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="SyntaxTest.setSyntaxTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="test" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="SyntaxTest" />
-      <option name="METHOD_NAME" value="setSyntaxTests" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Main" />
-        <item itemvalue="JUnit.SyntaxTest.identifierTests" />
+        <item itemvalue="JUnit.CalculatorTest" />
+        <item itemvalue="JUnit.SyntaxTest" />
         <item itemvalue="JUnit.SyntaxTest.parenthesisBalanceTests" />
+        <item itemvalue="Application.Main" />
         <item itemvalue="JUnit.SyntaxTest.priorityTests" />
-        <item itemvalue="JUnit.SyntaxTest.setSyntaxTests" />
       </list>
     </recent_temporary>
   </component>
@@ -120,6 +123,7 @@
       <workItem from="1665566041680" duration="4194000" />
       <workItem from="1665747546893" duration="16170000" />
       <workItem from="1665830068075" duration="21571000" />
+      <workItem from="1666350468302" duration="5840000" />
     </task>
     <task id="LOCAL-00001" summary="na wg">
       <created>1665570362100</created>
@@ -149,42 +153,25 @@
       <option name="project" value="LOCAL" />
       <updated>1666000491367</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="26/30 tests.&#10;&#10;TODO:&#10;Syntax&#10;- parenthesis balance&#10;- endOfLine&#10;Calc&#10;- expressionEval&#10;- ComplicExpression">
+      <created>1666279096406</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1666279096407</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="Vcs.Log.History.Properties">
-    <option name="SHOW_OTHER_BRANCHES" value="true" />
-    <option name="COLUMN_ID_ORDER">
-      <list>
-        <option value="Default.Root" />
-        <option value="Default.Author" />
-        <option value="Default.Date" />
-        <option value="Default.Subject" />
-        <option value="Space.CommitStatus" />
-      </list>
-    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
         <entry key="MAIN">
           <value>
-            <State>
-              <option name="FILTERS">
-                <map>
-                  <entry key="branch">
-                    <value>
-                      <list>
-                        <option value="origin/test3" />
-                      </list>
-                    </value>
-                  </entry>
-                </map>
-              </option>
-            </State>
+            <State />
           </value>
         </entry>
       </map>
@@ -197,9 +184,19 @@
     <MESSAGE value="test" />
     <MESSAGE value="na wg" />
     <MESSAGE value="zat:&#10;&#10;ebnf" />
-    <option name="LAST_COMMIT_MESSAGE" value="zat:&#10;&#10;ebnf" />
+    <MESSAGE value="26/30 tests.&#10;&#10;TODO:&#10;Syntax&#10;- parenthesis balance&#10;- endOfLine&#10;Calc&#10;- expressionEval&#10;- ComplicExpression" />
+    <option name="LAST_COMMIT_MESSAGE" value="26/30 tests.&#10;&#10;TODO:&#10;Syntax&#10;- parenthesis balance&#10;- endOfLine&#10;Calc&#10;- expressionEval&#10;- ComplicExpression" />
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/test/java/SyntaxTest.java</url>
+          <line>118</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
         <watch expression="((LinkedList)((Set)set).list).current" custom="nl.vu.labs.phoenix.ap.Set,nl.vu.labs.phoenix.ap.LinkedList" />

@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="46da1e3f-2994-486a-9f64-9b10d66a224c" name="Changes" comment="26/30 tests.&#10;&#10;TODO:&#10;Syntax&#10;- parenthesis balance&#10;- endOfLine&#10;Calc&#10;- expressionEval&#10;- ComplicExpression">
+    <list default="true" id="46da1e3f-2994-486a-9f64-9b10d66a224c" name="Changes" comment="30/30 tests.&#10;&#10;TODO:&#10;- Naming conventions&#10;- logic">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/java/nl/vu/labs/phoenix/ap/Interpreter.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/java/nl/vu/labs/phoenix/ap/Interpreter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/java/nl/vu/labs/phoenix/ap/Set.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/java/nl/vu/labs/phoenix/ap/Set.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,7 +50,7 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;profiler.jvm&quot;
   }
 }</component>
-  <component name="RunManager" selected="JUnit.CalculatorTest">
+  <component name="RunManager" selected="JUnit.SyntaxTest">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="nl.vu.labs.phoenix.ap.Main" />
       <module name="main" />
@@ -91,11 +92,11 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="SyntaxTest.priorityTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="SyntaxTest.spacesTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="test" />
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="SyntaxTest" />
-      <option name="METHOD_NAME" value="priorityTests" />
+      <option name="METHOD_NAME" value="spacesTest" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -103,11 +104,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.CalculatorTest" />
         <item itemvalue="JUnit.SyntaxTest" />
-        <item itemvalue="JUnit.SyntaxTest.parenthesisBalanceTests" />
+        <item itemvalue="JUnit.CalculatorTest" />
         <item itemvalue="Application.Main" />
-        <item itemvalue="JUnit.SyntaxTest.priorityTests" />
+        <item itemvalue="JUnit.SyntaxTest.spacesTest" />
+        <item itemvalue="JUnit.SyntaxTest.parenthesisBalanceTests" />
       </list>
     </recent_temporary>
   </component>
@@ -123,7 +124,8 @@
       <workItem from="1665566041680" duration="4194000" />
       <workItem from="1665747546893" duration="16170000" />
       <workItem from="1665830068075" duration="21571000" />
-      <workItem from="1666350468302" duration="5840000" />
+      <workItem from="1666350468302" duration="15195000" />
+      <workItem from="1666373576446" duration="5000" />
     </task>
     <task id="LOCAL-00001" summary="na wg">
       <created>1665570362100</created>
@@ -160,7 +162,14 @@
       <option name="project" value="LOCAL" />
       <updated>1666279096407</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="30/30 tests.&#10;&#10;TODO:&#10;- Naming conventions&#10;- logic">
+      <created>1666356404544</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1666356404544</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -185,7 +194,8 @@
     <MESSAGE value="na wg" />
     <MESSAGE value="zat:&#10;&#10;ebnf" />
     <MESSAGE value="26/30 tests.&#10;&#10;TODO:&#10;Syntax&#10;- parenthesis balance&#10;- endOfLine&#10;Calc&#10;- expressionEval&#10;- ComplicExpression" />
-    <option name="LAST_COMMIT_MESSAGE" value="26/30 tests.&#10;&#10;TODO:&#10;Syntax&#10;- parenthesis balance&#10;- endOfLine&#10;Calc&#10;- expressionEval&#10;- ComplicExpression" />
+    <MESSAGE value="30/30 tests.&#10;&#10;TODO:&#10;- Naming conventions&#10;- logic" />
+    <option name="LAST_COMMIT_MESSAGE" value="30/30 tests.&#10;&#10;TODO:&#10;- Naming conventions&#10;- logic" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

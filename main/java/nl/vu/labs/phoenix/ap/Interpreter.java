@@ -37,111 +37,26 @@ final static String STATEMENT_INVALID_STARTING_ENTRY="Error: invalid starting en
 final static String PRINT_STATEMENT_ERROR_ENDOFLINE = "Error: input detected between end of statement and end of line";
     @Override
     public T getMemory(String v) {
+        Scanner idScanner;
+        IdentifierInterface id;
+
         try {
-            Scanner idScanner = new Scanner(v);
-            IdentifierInterface id = identifier(idScanner);
+            idScanner = new Scanner(v);
+            id = identifier(idScanner);
+
             idScanner.close();
+
             return map.get(id);
         }catch (APException e){
             e.printStackTrace();
         }
 
         System.out.println("no key found");
-
         return null;
     }
 
-    char readLetter(Scanner in ) throws APException {
-        if(nextCharIsLetter(in)){
-            return nextChar(in);
-        }else{
-            throw new APException("Error: Identifiers should start with a letter");
-        }
-    }
 
 
-    IdentifierInterface identifier(Scanner in) throws APException {
-        in.useDelimiter("");
-        IdentifierInterface id = new Identifier();
-
-        isSpace(in);
-
-        id.init(readLetter(in));
-        while(nextCharIsAlphaNum(in)){
-            id.addChar(nextChar(in));
-        }
-        return id;
-    }
-
-
-    T complexFactor(Scanner in) throws APException {
-        T set ;
-
-        checkCharacter(in,COMPLEX_FACTOR_OPENING_BRACKET);
-        isSpace(in);
-        set = expression(in);
-        isSpace(in);
-        checkCharacter(in,COMPLEX_FACTOR_CLOSING_BRACKET);
-
-        return set;
-    }
-
-    T set(Scanner in) throws APException {
-        T set = (T) new Set<BigInteger>();
-        checkCharacter(in,SET_OPENING_BRACKET);
-        isSpace(in);
-
-        if(nextCharIs(in,SET_CLOSING_BRACKET)){
-            checkCharacter(in,SET_CLOSING_BRACKET);
-            return set;
-        }
-        set.add(naturalNumber(in));
-        isSpace(in);
-
-        while(nextCharIs(in,SET_DELIMITER)){
-            checkCharacter(in,SET_DELIMITER);
-            isSpace(in);
-            if(nextCharIsDigit(in)) {
-                BigInteger bint = naturalNumber(in);
-                if(!set.elementExists(bint)){
-                    set.add(bint);
-                }
-                isSpace(in);
-            } else{
-                throw new APException(SET_WRONG_SYNTAX);
-            }
-        }
-        isSpace(in);
-        checkCharacter(in,SET_CLOSING_BRACKET);
-        return set;
-    }
-
-
-    BigInteger naturalNumber(Scanner in) throws APException{
-        BigInteger integer ;
-        if (nextDigitIsZero(in)) {
-            integer =  new BigInteger(String.valueOf(zero(in)));
-            if(nextCharIsDigit(in)){
-                throw new APException(NATURAL_NUMBERS_POS_CANNOT_START_WITH_0);
-            }
-            return integer;
-        }else if(nextDigitIsPositive(in)){
-            integer = new BigInteger(positiveNumber(in));
-            return integer;
-        }else{
-            throw new APException(NATURAL_NUMBERS_INVALID);
-    }
-    }
-
-    String positiveNumber(Scanner in)throws APException{
-        StringBuffer str = new StringBuffer();
-        str.append(notZero(in));
-
-        while (nextCharIsDigit(in)){
-           str.append(number(in));
-        }
-        return str.toString();
-    }
     char number (Scanner in) throws APException{
         if(nextDigitIsPositive(in)){
             return notZero(in);
@@ -157,6 +72,7 @@ final static String PRINT_STATEMENT_ERROR_ENDOFLINE = "Error: input detected bet
             return nextChar(in);
         }
     }
+
     char zero(Scanner in) throws APException {
         if(!nextDigitIsZero(in)){
             throw new APException(NATURAL_NUMBERS_NOT_ZERO);
@@ -164,53 +80,148 @@ final static String PRINT_STATEMENT_ERROR_ENDOFLINE = "Error: input detected bet
             return nextChar(in);
         }
     }
+
     boolean nextDigitIsPositive(Scanner in){
         return in.hasNext("[1-9]");
     }
+
     boolean nextDigitIsZero(Scanner in){
-        return in.hasNext("0");
+        return nextCharIs(in,'0');
+    }
+
+    BigInteger positiveNum(Scanner in){
+        //!nextDigitIsZero(in);
+
+        return null;
+    }
+    String positiveNumber(Scanner in)throws APException{
+        StringBuffer str = new StringBuffer();
+        str.append(notZero(in));
+
+        while (nextCharIsDigit(in)){
+            str.append(number(in));
+        }
+        return str.toString();
+    }
+    BigInteger naturalNumber(Scanner in) throws APException{
+        BigInteger integer ;
+
+        if (nextDigitIsZero(in)) {
+            integer =  new BigInteger(String.valueOf(zero(in)));
+            if(nextCharIsDigit(in)){
+                throw new APException(NATURAL_NUMBERS_POS_CANNOT_START_WITH_0);
+            }
+
+            return integer;
+        }else if(nextDigitIsPositive(in)){
+            integer = new BigInteger(positiveNumber(in));
+
+            return integer;
+        }else{
+            throw new APException(NATURAL_NUMBERS_INVALID);
+        }
+    }
+
+    T set(Scanner in) throws APException {
+        T set = (T) new Set<BigInteger>();
+
+        checkCharacter(in,SET_OPENING_BRACKET);
+        isSpace(in);
+        if(nextCharIs(in,SET_CLOSING_BRACKET)){
+            nextChar(in);
+            //checkCharacter(in,SET_CLOSING_BRACKET);
+            return set;
+        }
+
+        set.add(naturalNumber(in));
+        isSpace(in);
+        while(nextCharIs(in,SET_DELIMITER)){
+            nextChar(in);//checkCharacter(in,SET_DELIMITER);
+            isSpace(in);
+            if(nextCharIsDigit(in)) {
+                BigInteger bint = naturalNumber(in);
+                set.add(bint);
+                isSpace(in);
+            } else{
+                throw new APException(SET_WRONG_SYNTAX); // Error: natural number expected after set delimiter
+            }
+        }
+        checkCharacter(in,SET_CLOSING_BRACKET);
+
+        return set;
+    }
+    char readLetter(Scanner in ) throws APException {
+        if(nextCharIsLetter(in)){
+            return nextChar(in);
+        }else{
+            throw new APException("Error: Identifiers should start with a letter");
+        }
+    }
+    IdentifierInterface identifier(Scanner in) throws APException {
+        in.useDelimiter("");
+        IdentifierInterface identifier = new Identifier();
+
+        identifier.init(readLetter(in));
+        while(nextCharIsAlphanumeric(in)){
+            identifier.addChar(nextChar(in));
+        }
+
+        return identifier;
+    }
+    T complexFactor(Scanner in) throws APException {
+        T expression ;
+
+        checkCharacter(in,COMPLEX_FACTOR_OPENING_BRACKET);
+        expression = expression(in);
+        checkCharacter(in,COMPLEX_FACTOR_CLOSING_BRACKET);
+
+        return expression;
     }
 
     T factor(Scanner in) throws APException {
-        T set;
+        T factor;
+
         isSpace(in);
         if (nextCharIsLetter(in)) {
             IdentifierInterface id = identifier(in);
-            set = map.get(id);
+            factor = map.get(id);
         } else if (nextCharIs(in, SET_OPENING_BRACKET)) {
-            set = set(in);
+            factor = set(in);
         } else if (nextCharIs(in, COMPLEX_FACTOR_OPENING_BRACKET)) {
-            set = complexFactor(in);
+            factor = complexFactor(in);
         } else {
             throw new APException(FACTOR_ERROR);
         }
         isSpace(in);
-        return set;
+
+        return factor;
+    }
+
+    T multiplicativeOperation(Scanner in, T factor) throws APException {
+        nextChar(in);
+        return (T) factor.intersection(factor(in));
+
     }
 
     T term(Scanner in) throws APException {
-        T set;
-        isSpace(in);
-        set = factor(in);
-        isSpace(in);
+        T term;
+
+        term = factor(in);
         while(isMultiplOp(in)){
-            nextChar(in);
-            isSpace(in);
-            set = (T) set.intersection(factor(in));
-            isSpace(in);
+            term = multiplicativeOperation(in,term);//(T) term.intersection(factor(in));
         }
-        return set;
+
+        return term;
     }
 
-    boolean isMultiplOp(Scanner in) {
-        return nextCharIs(in, '*');
-    }
-
-    T additiveOperation(Scanner in, T set) throws APException {
-
-        isSpace(in);
-
-        if (nextCharIs(in, '+')) {
+    T additiveOperation(Scanner in, T term) throws APException {
+        switch(nextChar(in)){
+            case '+':  return (T) term.union(term(in));
+            case '-': return (T) term.difference(term(in));
+            case '|': return (T) term.symmetricDifference(term(in));
+            default:  throw new APException(ADDITIVE_OPERATOR_UNKNOWN_ERROR);
+        }
+        /*if (nextCharIs(in, '+')) {
             checkCharacter(in,'+');
                 return (T) set.union(term(in));
         } else if(nextCharIs(in,'-')){
@@ -221,51 +232,95 @@ final static String PRINT_STATEMENT_ERROR_ENDOFLINE = "Error: input detected bet
             return (T) set.symmetricDifference(term(in));
         }else{
             throw new APException(ADDITIVE_OPERATOR_UNKNOWN_ERROR);
-        }
+        }*/
     }
     T expression(Scanner in) throws APException {
-       isSpace(in);
+        T expression;
 
-        T set = term(in);
-        isSpace(in);
+        expression = term(in);
 
-        if(in.hasNext() && !(isAdditiveOperator(in) || nextCharIs(in,')'))){
-            throw new APException(EXPRESSION_ERROR);
+        if(in.hasNext() ){
+            if(nextCharIs(in,COMPLEX_FACTOR_CLOSING_BRACKET)){
+                return expression;
+            }else if(!isAdditiveOperator(in) ){
+                throw new APException(EXPRESSION_ERROR);
+            }
+
         }
-        if(nextCharIs(in,')')){
-            return set;
-        }
-        isSpace(in);
-
         while(isAdditiveOperator(in)){
-            set = additiveOperation(in,set);
-            isSpace(in);
-
+            expression = additiveOperation(in,expression);
         }
+
+        return expression;
+    }
+    void assignment(Scanner in) throws APException {
+        IdentifierInterface id;
+        T expression;
+
+        id = identifier(in);
         isSpace(in);
-        return set;
+        checkCharacter(in,'=');
+        expression = expression(in);
+        endOfLine(in);
+
+        map.put(id, expression);
+    }
+
+    private T printStatement(Scanner in) throws APException {
+
+        checkCharacter(in,'?');
+        T print_statement = expression(in);
+        endOfLine(in);
+
+        System.out.println(print_statement.printSet());
+        return print_statement;
+    }
+    private T statement(Scanner in) throws APException {
+        in.useDelimiter("");
+        isSpace(in);
+        if (nextCharIs(in, '?')) {
+            return printStatement(in);
+        } else if (nextCharIsAlphanumeric(in)) {
+            assignment(in);
+        } else if (!nextCharIs(in, '/')) {
+            throw new APException(STATEMENT_INVALID_STARTING_ENTRY);
+        }
+        return null;
+    }
+
+    private T program(Scanner in) throws APException {
+        T statement = statement(in);
+
+        in.close();
+        return statement;
+    }
+
+    @Override
+    public T eval(String s) {
+        Scanner in = new Scanner(s);
+        try {
+            return program(in);
+        } catch (APException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    boolean isMultiplOp(Scanner in) {
+        return nextCharIs(in, '*');
+    }
+    private boolean isEndOfLine(Scanner in){
+        isSpace(in);
+        return nextCharIs(in,'\n');
     }
     boolean isAdditiveOperator(Scanner in) {
         return (nextCharIs(in, '|') || nextCharIs(in, '+') || nextCharIs(in, '-'));
     }
 
-    void assignment(Scanner in) throws APException {
-        isSpace(in);
-        IdentifierInterface id = identifier(in);
-        isSpace(in);
-        checkCharacter(in,'=');
-        isSpace(in);
-        T set = expression(in);
-        isSpace(in);
+    void endOfLine(Scanner in) throws APException {
         if(in.hasNext() && !isEndOfLine(in)){
             throw new APException(ENDOFLINE_INPUT_ERROR);
         }
-        map.put(id, set);
-
-        isSpace(in);
     }
-
-
     void isSpace(Scanner in){
         while(nextCharIs(in,' ')){
             nextChar(in);
@@ -276,7 +331,7 @@ final static String PRINT_STATEMENT_ERROR_ENDOFLINE = "Error: input detected bet
         return in.next().charAt(0);
 
     }
-    boolean nextCharIsAlphaNum(Scanner in) {
+    boolean nextCharIsAlphanumeric(Scanner in) {
         return in.hasNext("[a-zA-Z0-9]");
     }
 
@@ -298,54 +353,4 @@ final static String PRINT_STATEMENT_ERROR_ENDOFLINE = "Error: input detected bet
     private boolean nextCharIs(Scanner in, char c) {
         return in.hasNext(Pattern.quote(c + ""));
     }
-    private T printStatement(Scanner in) throws APException {
-        checkCharacter(in,'?');
-        isSpace(in);
-
-        T set = expression(in);
-        if(in.hasNext() && !isEndOfLine(in)){
-            throw new APException(PRINT_STATEMENT_ERROR_ENDOFLINE);
-        }
-        isSpace(in);
-        System.out.println(set.printSet());
-        return set;
-    }
-    /*
-    statement = print statement: "'?'expression" | assignment: "identifier '=' expression" | comment: "/.."
-     */
-    private T statement(Scanner in) throws APException {
-        in.useDelimiter("");
-        isSpace(in);
-
-        if (nextCharIs(in, '?')) {
-            return printStatement(in);
-        } else if (nextCharIsAlphaNum(in)) {
-            assignment(in);
-        } else if (!nextCharIs(in, '/')) {
-            throw new APException(STATEMENT_INVALID_STARTING_ENTRY);
-        }
-        return null;
-    }
-    private boolean isEndOfLine(Scanner in){
-        isSpace(in);
-        return nextCharIs(in,'\n');
-    }
-    private T program(Scanner in) throws APException {
-        T statement = statement(in);
-        isEndOfLine(in);
-        in.close();
-        return statement;
-    }
-
-    @Override
-    public T eval(String s) {
-        Scanner in = new Scanner(s);
-        try {
-            return program(in);
-        } catch (APException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
 }

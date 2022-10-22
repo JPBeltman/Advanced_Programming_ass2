@@ -17,7 +17,7 @@ public class Set<T extends Comparable<T>> implements SetInterface<T> {
 			this.list.insert(t);
 			return true;
 		}else{
-			System.out.println("Element exists");
+			//System.out.println("Element exists");
 			return false;
 		}
 	}

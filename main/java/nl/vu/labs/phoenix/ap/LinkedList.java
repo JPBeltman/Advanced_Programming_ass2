@@ -80,6 +80,8 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
             current = new Node(d, current, current.next);
             current.next.prior = current;
             current.prior.next = current;
+
+
             numElements += 1;
         }
         return this;
@@ -126,10 +128,8 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
         if (this.numElements == 0) {
             return false;
         } else if (this.numElements == 1) {
-            if (d.compareTo(this.retrieve()) == 0) {
-                //System.out.println("Found element");
-                return true;
-            }
+            //System.out.println("Found element");
+            return d.compareTo(this.retrieve()) == 0;
         } else {
                 this.goToFirst();
                 while (this.current != this.last) {
@@ -144,13 +144,10 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
                             return false;
                         }
                     }
-                }if (d.compareTo(this.retrieve()) == 0) {
-                   //System.out.println("Found element");
-                    return true;
                 }
+                //System.out.println("Found element");
+                return d.compareTo(this.retrieve()) == 0;
             }
-
-        return false;
     }
 
 

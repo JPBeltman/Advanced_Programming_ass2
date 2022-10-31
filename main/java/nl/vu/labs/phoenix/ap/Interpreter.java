@@ -17,6 +17,10 @@ public class Interpreter<T extends SetInterface<BigInteger>> implements Interpre
     final static char SET_DELIMITER = ',';
     final static char COMPLEX_FACTOR_OPENING_BRACKET = '(';
     final static char COMPLEX_FACTOR_CLOSING_BRACKET = ')';
+    final static char UNION = '+';
+    final static char DIFFERENCE = '-';
+    final static char SYMM_DIFF = '|';
+    final static char INTERSECTION = '*';
 
     final static String SET_STARTING_ERROR = "ERROR: a set should start with a natural number";
     final static String SET_WRONG_DIGIT = "Error: Only natural numbers allowed";
@@ -55,8 +59,6 @@ final static String PRINT_STATEMENT_ERROR_ENDOFLINE = "Error: input detected bet
         return null;
     }
 
-
-
     char number (Scanner in) throws APException{
         if(nextDigitIsPositive(in)){
             return notZero(in);
@@ -89,7 +91,7 @@ final static String PRINT_STATEMENT_ERROR_ENDOFLINE = "Error: input detected bet
         return nextCharIs(in,'0');
     }
 
-    BigInteger positiveNum(Scanner in){
+    BigInteger positiveNum(Scanner in){  //test
         //!nextDigitIsZero(in);
 
         return null;
@@ -165,7 +167,6 @@ final static String PRINT_STATEMENT_ERROR_ENDOFLINE = "Error: input detected bet
         while(nextCharIsAlphanumeric(in)){
             identifier.addChar(nextChar(in));
         }
-
         return identifier;
     }
     T complexFactor(Scanner in) throws APException {
@@ -216,9 +217,9 @@ final static String PRINT_STATEMENT_ERROR_ENDOFLINE = "Error: input detected bet
 
     T additiveOperation(Scanner in, T term) throws APException {
         switch(nextChar(in)){
-            case '+':  return (T) term.union(term(in));
-            case '-': return (T) term.difference(term(in));
-            case '|': return (T) term.symmetricDifference(term(in));
+            case UNION:  return (T) term.union(term(in));
+            case DIFFERENCE: return (T) term.difference(term(in));
+            case SYMM_DIFF: return (T) term.symmetricDifference(term(in));
             default:  throw new APException(ADDITIVE_OPERATOR_UNKNOWN_ERROR);
         }
         /*if (nextCharIs(in, '+')) {
@@ -245,12 +246,10 @@ final static String PRINT_STATEMENT_ERROR_ENDOFLINE = "Error: input detected bet
             }else if(!isAdditiveOperator(in) ){
                 throw new APException(EXPRESSION_ERROR);
             }
-
         }
         while(isAdditiveOperator(in)){
             expression = additiveOperation(in,expression);
         }
-
         return expression;
     }
     void assignment(Scanner in) throws APException {

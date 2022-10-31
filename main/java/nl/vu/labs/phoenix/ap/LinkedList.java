@@ -65,18 +65,15 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
             // items' next be4 current item = current
             current.prior.next = current;
             numElements += 1;
-        } else { // item somewhere within bounds of list
-            //start at first item and find spot;
-            // iterate while d is larger than the next of current item
-            // if not: insert d there
+        } else {
+            //if(find(d)){
+            //    return this;
+            //}
+
             goToFirst();
             while (d.compareTo(current.next.data) >= 0) {
                 goToNext();
             }
-            //inserting d:
-            // d is new node where prior is current item and next item is next of current
-            // item after new current element has current element as prior
-            // item be4 new current element has current element as next
             current = new Node(d, current, current.next);
             current.next.prior = current;
             current.prior.next = current;
@@ -107,6 +104,7 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
                 last = current;
                 numElements -= 1;
             } else {
+
                 // the next item prior to the current item is the next of current
                 current.prior.next = current.next;
                 // prior item to next of current item is prior of current
@@ -122,36 +120,32 @@ public class LinkedList<E extends Comparable<E>> implements ListInterface<E> {
 
     @Override
     public boolean find(E d) {
-       // System.out.println("In find,");
-        if (this.numElements == 0) {
+        if(this.numElements == 0){
             return false;
-        } else if (this.numElements == 1) {
-            if (d.compareTo(this.retrieve()) == 0) {
-                //System.out.println("Found element");
+        }
+        if(d.compareTo(first.data) < 0){
+            goToFirst();
+            return false;
+        }
+        goToFirst();
+        while(current != last){
+            if(d.compareTo(current.data) == 0 ){
                 return true;
+            }else if(d.compareTo(current.data)>0) {
+                goToNext();
+            }else if(d.compareTo(current.data)<0){
+                current = current.prior;
+                return false;
             }
-        } else {
-                this.goToFirst();
-                while (this.current != this.last) {
-                    if (d.compareTo(this.retrieve()) == 0) {
-                        //System.out.println("Found element");
-                         return true;
-                    } else {
-                        if (d.compareTo(this.retrieve()) > 0) {
-                            goToNext();
-                        } else {
-                            this.current = this.current.prior;
-                            return false;
-                        }
-                    }
-                }if (d.compareTo(this.retrieve()) == 0) {
-                   //System.out.println("Found element");
-                    return true;
-                }
-            }
-
-        return false;
+        }
+        return d.compareTo(current.data) == 0;
     }
+    // [a,b,d,e,g]
+    // insert [c,f]
+    // c>a ->next; c>b -> next; c<d, return b
+    //
+    //
+    //
 
 
     @Override
